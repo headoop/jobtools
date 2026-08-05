@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wochenarbeitszeit konvertieren</title>
+  <link href="style.css" rel="stylesheet" />
+  <script src="convert.js" async></script>
+</head>
+
+<body>
+  <header>
+    <h1>Jobtools</h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Arbeitszeit</a></li>
+        <li><a class="active" href="#">Wochenarbeitszeit</a></li>
+        <li><a href="ages.html">Alter berechnen</a></li>
+        <li><a href="durations.html">Zeitraum berechnen</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Teilzeitanteil berechnen</h1>
+    <div id="maxi-container">
+
+      <div id="input-container">
+        <h3>Bitte auswählen und Wochenstunden oder Prozent eintragen:</h3>
+        <div class="input-line">
+          <label for="hours">Wochenstunden: </label>
+          <input type="number" name="hours-input" id="hours-input" value="" />
+          <button type="button" onclick="convertHoursToPercent()">convert</button>
+        </div>
+
+        <p></p>
+        <div class="input-line">
+          <label for="percent">Prozent: </label>
+          <input type="number" name="percent-input" id="percent-input" value="" />
+          <button type="button" onclick="convertPercentToHours()">convert</button>
+        </div>
+        <p></p>
+        <pre id="to-percent"></pre>
+        <pre id="to-hours"></pre>
+      </div>
+      <!-- <div id="button-container">
+        <button type="submit" onclick="calcAges()">Enter</button>
+      </div> -->
+      <div id="result-container">
+        <p id="result-week-hours"></p>
+        <p id="result-percent"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      &#9400;
+      <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+    </p>
+  </footer>
+</body>
+
+</html>

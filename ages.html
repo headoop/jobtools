@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>mehr Ideen</title>
+  <link href="style.css" rel="stylesheet" />
+  <script src="ages.js" async></script>
+</head>
+
+<body>
+  <header>
+    <h1>Jobtools</h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Arbeitszeit</a></li>
+        <li><a href="convert.html">Wochenarbeitszeit</a></li>
+        <li><a class="active" href="#">Alter berechnen</a></li>
+        <li><a href="durations.html">Zeitraum berechnen</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Alter berechnen</h1>
+    <div id="maxi-container">
+      Berechnet das Alter am heutigen Tag sowie den Tag vor dem 18. und dem
+      21. Geburtstag.<br />
+
+      <div id="input-container">
+        <input type="date" name="birthday" id="birthday" value="" />
+      </div>
+      <div id="button-container">
+        <button type="submit" onclick="action()">Enter</button>
+      </div>
+      <div id="result-container">
+        <p>heutiges Alter:</p>
+        <p id="age-today"></p>
+        <p>Tag vor dem 18.:</p>
+        <p id="day-before-18"></p>
+        <p>Tag vor dem 21.:</p>
+        <p id="day-before-21"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      &#9400;
+      <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+    </p>
+  </footer>
+</body>
+
+</html>

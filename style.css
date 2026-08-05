@@ -1,0 +1,231 @@
+body {
+  margin: 0;
+  background-color: ivory;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: hsl(0, 0%, 35%);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  padding: 15px 25px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.navbar ul {
+  margin: 0;
+  list-style-type: none;
+  background-color: hsl(0, 0%, 35%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+  display: block;
+  text-align: center;
+}
+
+.navbar a:hover {
+  background-color: hsl(0, 0%, 60%);
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar a.active {
+  /* background-color: hsl(0, 0%, 15%); */
+  background-color: #04AA6D;
+}
+/* main h2 { */
+/*   font-family: Arial, Helvetica, sans-serif; */
+/* } */
+
+main {
+  margin-top: 200px;
+  padding: 15px 25px;
+}
+
+#maxi-container {
+  min-width: 300px;
+  max-width: 650px;
+  height: 350px;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #f6b26b;
+}
+
+#input-container {
+  display: flex;
+  flex-direction: column;
+  /* display: flex; */
+  align-items: center;
+  margin: 0 0 30px 0;
+  /* min-width: 300px; */
+  /* max-width: 450px; */
+  border: none;
+  padding: 20px 45px;
+  /* border-radius: 5px; */
+  text-align: center;
+  background-color: #f6b26b;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.input-line button {
+  margin: 10px;
+  /* display: block; */
+  /* margin: 10px; */
+  padding: 20px 45px;
+  width: 180px;
+}
+
+#button-container {
+  /* display: flex; */
+  /* align-items: center; */
+  /* margin: 0 60px 0 60px; */
+  /* min-width: 300px; */
+  /* max-width: 450px; */
+  /* width: 392px; */
+  border: none;
+  /* padding: 20px 45px; */
+  /* border-radius: 5px; */
+  text-align: center;
+}
+
+#result-container {
+  /* display: flex; */
+  /* flex-direction: column; */
+  visibility: hidden;
+  /* align-items: center; */
+  /* width: 300px; */
+  margin: 30px 0 0 0;
+  /* min-width: 300px; */
+  /* max-width: 450px; */
+  /* height: 180px; */
+  border: none;
+  /* padding: 20px 45px; */
+  /* border-radius: 5px; */
+  text-align: center;
+  background-color: #6aa84f;
+}
+
+button {
+  margin: 0 auto;
+  display: block;
+  width: 30%;
+  /* width: 300px; */
+  padding: 10px 0px;
+  border-radius: 5px;
+  /* https://www.color-hex.com/color/f44336 */
+  background-color: #f44336;
+  font-size: 1.3rem;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  /* box-shadow: 0 6px #999; */
+  /* transition: all 0.4s ease; */
+  /* transition: margin 0.4s ease; */
+}
+
+button span {
+  display: inline-block;
+}
+
+button:hover {
+  /* background-color: #f44336; */
+  /* background-color: #f55a4e; */
+  background-color: #db3c30;
+  scale: 1.03;
+}
+
+button:hover span {
+  transform: scale(0.9709);
+}
+
+button:active {
+  /* background-color: #3e8e41; */
+  background-color: #6aa84f;
+  box-shadow: 0 4px #666;
+  transform: translateY(3px);
+}
+
+#workTime, #endDay, #diffTime, #pause {
+  display: none;
+  /* padding: 5px 10px; */
+  margin: 8px;
+  background-color: #6aa84f;
+}
+
+input[type=time] {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  border: none;
+}
+
+footer b {
+  text-decoration: none;
+}
+
+#week-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 300px;
+  border: none;
+  padding: 20px 45px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #6fa8dc;
+}
+
+#week-inputs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#weekPercent {
+  min-width: 3ch;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  border: none;
+  text-align: right;
+  -moz-appearance: textfield;
+}
+
+#weekPercent::-webkit-outer-spin-button,
+#weekPercent::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#weekHours {
+  width: 60px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  border: none;
+  text-align: right;
+}

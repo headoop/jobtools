@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zeitraum berechnen</title>
+  <link href="style.css" rel="stylesheet" />
+  <script src="durations.js" async></script>
+</head>
+
+<body>
+  <header>
+    <h1>Jobtools</h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Arbeitszeit</a></li>
+        <li><a href="convert.html">Wochenarbeitszeit</a></li>
+        <li><a href="ages.html">Alter berechnen</a></li>
+        <li><a class="active" href="#">Zeitraum berechnen</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Zeitraum berechnen</h1>
+    <div id="maxi-container">
+      <div id="div-start">
+        <!-- Startdatum (erster Tag des Zeitraums) -> input date -->
+        <label for="start">Startdatum:</label>
+        <input type="date" name="start" id="start">
+      </div>
+      <div id="div-summand">
+        <!-- wieviel addieren? -> input number -->
+        <label for="summand">Wieviel addieren?</label>
+        <input type="number" name="summand" id="sumand">
+        <!-- welche Einheit (Tage, Wochen Monate) -> radio -->
+        <input type="radio" name="units" id="radio-days" value="days">
+        <label for="radio-days">Tage</label>
+        <input type="radio" name="units" id="radio-weeks" value="weeks">
+        <label for="radio-weeks">Wochen</label>
+        <input type="radio" name="units" id="radio-years" value="years">
+        <label for="radio-years">Monate</label>
+      </div>
+    </div>
+    <div id="button-container">
+      <!-- Button -->
+    </div>
+    <div id="result-container">
+      <!-- Ausgabe: letzter Tag des Zeitraums -> ouput date -->
+    </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&#9400; <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+    </p>
+  </footer>
+</body>
+
+</html>
