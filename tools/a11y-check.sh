@@ -41,6 +41,16 @@ cp "$pruefskript" "$arbeitsverzeichnis"/
 
 fehler=0
 
+# Jede Seite wird zweimal geprüft: einmal wie üblich, einmal in einem
+# schmalen Fenster mit vergrößerter Browserschrift. Erst der zweite Durchlauf
+# deckt Layouts auf, die dann waagerechtes Scrollen erzwingen (WCAG 1.4.10).
+pruefe() {
+  "$browser" --headless --disable-gpu --no-sandbox \
+    --user-data-dir="$profil" --window-size="$2",900 \
+    --blink-settings=defaultFontSize="$3" \
+    --virtual-time-budget=8000 --dump-dom "file://$1" 2>/dev/null
+}
+
 for seite in $seiten; do
   if [ ! -f "$arbeitsverzeichnis/$seite" ]; then
     echo "Seite nicht gefunden: $seite" >&2
@@ -66,34 +76,38 @@ for seite in $seiten; do
     { print }
   ' "$arbeitsverzeichnis/$seite" > "$pruefseite"
 
-  bericht=$("$browser" --headless --disable-gpu --no-sandbox \
-    --user-data-dir="$profil" --virtual-time-budget=8000 --dump-dom \
-    "file://$pruefseite" 2>/dev/null |
-    sed -n '/<pre id="a11y-report">/,/<\/pre>/p' |
-    sed -e 's#^.*<pre id="a11y-report">##' -e 's#</pre>.*$##' \
-        -e 's#&lt;#<#g' -e 's#&gt;#>#g' -e 's#&quot;#"#g' \
-        -e "s/&#39;/'/g" -e 's#&amp;#\&#g' \
-        -e '${/^$/d}')
+  # Durchlauf 1: übliches Fenster; Durchlauf 2: schmal und große Schrift
+  for lauf in "1000 16 Standard" "400 32 schmal, Browserschrift 32px"; do
+    breite=$(echo "$lauf" | cut -d' ' -f1)
+    schrift=$(echo "$lauf" | cut -d' ' -f2)
+    titel=$(echo "$lauf" | cut -d' ' -f3-)
 
-  if [ -z "$bericht" ]; then
-    echo "=== $seite ==="
-    echo "  Kein Bericht erzeugt – lief das Prüfskript?" >&2
-    fehler=$((fehler + 1))
-    continue
-  fi
+    bericht=$(pruefe "$pruefseite" "$breite" "$schrift" |
+      sed -n '/<pre id="a11y-report"/,/<\/pre>/p' |
+      sed -e 's#^.*<pre id="a11y-report"[^>]*>##' -e 's#</pre>.*$##' \
+          -e 's#&lt;#<#g' -e 's#&gt;#>#g' -e 's#&quot;#"#g' \
+          -e "s/&#39;/'/g" -e 's#&amp;#\&#g' \
+          -e '${/^$/d}')
 
-  echo "=== $seite ==="
-  echo "$bericht"
-  echo
+    echo "=== $seite ($titel) ==="
+    if [ -z "$bericht" ]; then
+      echo "  Kein Bericht erzeugt – lief das Prüfskript?" >&2
+      fehler=$((fehler + 1))
+      continue
+    fi
 
-  # Schlusszeile des Berichts auswerten
-  offen=$(echo "$bericht" | sed -n 's/.*Nicht bestanden: \([0-9][0-9]*\).*/\1/p' | tail -1)
-  if [ -z "$offen" ]; then
-    echo "  Bericht unvollständig – Prüfung abgebrochen." >&2
-    fehler=$((fehler + 1))
-  elif [ "$offen" -gt 0 ]; then
-    fehler=$((fehler + offen))
-  fi
+    echo "$bericht"
+    echo
+
+    # Schlusszeile des Berichts auswerten
+    offen=$(echo "$bericht" | sed -n 's/.*Nicht bestanden: \([0-9][0-9]*\).*/\1/p' | tail -1)
+    if [ -z "$offen" ]; then
+      echo "  Bericht unvollständig – Prüfung abgebrochen." >&2
+      fehler=$((fehler + 1))
+    elif [ "$offen" -gt 0 ]; then
+      fehler=$((fehler + offen))
+    fi
+  done
 done
 
 if [ "$fehler" -gt 0 ]; then

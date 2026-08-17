@@ -368,8 +368,9 @@ footer a:hover {
    Karte
    --------------------------------------------------------------- */
 
+/* kein min-width: ein Mindestmaß in rem wüchse mit der Schriftgröße mit und
+   schöbe die Karte bei großer Schrift aus dem schmalen Fenster heraus */
 #maxi-container {
-  min-width: 17.5rem;
   max-width: 40.625rem;
   margin: 0 auto;
   padding: 2rem 1.75rem;
@@ -558,7 +559,9 @@ button:active {
    Liste auf, damit die Spalten zeilenübergreifend bündig stehen. */
 #result-container {
   display: none;
-  grid-template-columns: max-content 1fr;
+  /* minmax(0, …) statt max-content: die Bezeichnungsspalte darf schrumpfen
+     und umbrechen, statt bei großer Schrift das Fenster zu sprengen */
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
   align-items: baseline;
   gap: 0.75rem 1.125rem;
   margin: 1.625rem 0 0;
@@ -607,7 +610,7 @@ button:active {
 
 .result-grid {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
   align-items: baseline;
   gap: 0.75rem 1.125rem;
   margin: 0;
@@ -719,12 +722,16 @@ button:active {
     width: 100%;
   }
 
-  .result-grid {
+  /* Bezeichnung über den Wert stellen: nebeneinander passen beide Spalten
+     bei großer Schrift nicht mehr ins Fenster */
+  .result-grid,
+  #result-container {
     grid-template-columns: 1fr;
     gap: 0.25rem 0;
   }
 
-  .result-grid dd {
+  .result-grid dd,
+  #result-container dd {
     margin-bottom: 0.625rem;
   }
 }

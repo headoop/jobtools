@@ -312,6 +312,41 @@
     });
   };
 
+  // WCAG 1.4.10: Inhalte müssen umbrechen, statt waagerechtes Scrollen zu
+  // erzwingen – besonders bei kleinem Fenster und großer Schrift
+  const checkReflow = () => {
+    const root = document.documentElement;
+    // der eigene Bericht ist breiter als das Fenster und würde den Überlauf
+    // vortäuschen, den er messen soll
+    report.style.display = "none";
+    const breite = root.clientWidth;
+    const dokument = root.scrollWidth;
+    const ueberlauf = dokument > breite + 1;
+    const schuldige = [];
+    if (ueberlauf) {
+      document.querySelectorAll("body *").forEach((element) => {
+        if (element.closest("#a11y-report")) return;
+        const box = element.getBoundingClientRect();
+        if (box.width > 0 && box.right > breite + 1) {
+          schuldige.push(
+            element.tagName.toLowerCase() +
+              (element.id ? `#${element.id}` : "") +
+              ` (bis ${Math.round(box.right)}px)`
+          );
+        }
+      });
+    }
+    // Attribut wieder entfernen, nicht nur leeren: das Shell-Skript sucht
+    // den Bericht über <pre id="a11y-report">
+    report.removeAttribute("style");
+    result(
+      !ueberlauf,
+      `${dokument} / ${breite}px`,
+      `Dokumentbreite bei Grundschrift ${getComputedStyle(root).fontSize}` +
+        (schuldige.length ? ` – ${schuldige.slice(0, 3).join(", ")}` : "")
+    );
+  };
+
   const checkStructure = () => {
     const has = (ok, label) => result(ok, "", label);
 
@@ -370,6 +405,7 @@
   section("Bedienelemente und Platzhalter", checkControls);
   section("Sichtbarkeit des Tastaturfokus", checkFocus);
   section("Reihenfolge und Erreichbarkeit per Tastatur", checkKeyboard);
+  section("Umbruch ohne waagerechtes Scrollen", checkReflow);
   section("Struktur und Semantik", checkStructure);
 
   write(`\nGeprüft: ${checks}   Nicht bestanden: ${failures}`);
