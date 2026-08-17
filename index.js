@@ -5,41 +5,8 @@ const workTimeEl = document.getElementById("workTime");
 const diffTimeEl = document.getElementById("diffTime");
 const pauseEl = document.getElementById("pause");
 const resultContainerEl = document.getElementById("result-container");
-const weekPercentEl = document.getElementById("weekPercent");
-const weekHoursEl = document.getElementById("weekHours");
 const standardWorkDay = 468;
 const pauseShort = 30;
-const standardWeekMin = 5 * standardWorkDay;
-
-const resizeWeekPercent = () => {
-  weekPercentEl.style.width = `${Math.max(weekPercentEl.value.length, 3) + 1}ch`;
-};
-
-weekPercentEl.addEventListener("input", () => {
-  resizeWeekPercent();
-  if (weekPercentEl.value !== "") {
-    const totalMin = Math.round(Number(weekPercentEl.value) / 100 * standardWeekMin);
-    const h = Math.floor(totalMin / 60);
-    const m = totalMin % 60;
-    weekHoursEl.value = `${h}:${m.toString().padStart(2, "0")}`;
-  } else {
-    weekHoursEl.value = "";
-  }
-});
-
-weekHoursEl.addEventListener("input", () => {
-  const match = weekHoursEl.value.match(/^(\d+):(\d{2})$/);
-  if (match) {
-    const totalMin = Number(match[1]) * 60 + Number(match[2]);
-    weekPercentEl.value = (totalMin / standardWeekMin * 100).toString();
-    resizeWeekPercent();
-  } else if (weekHoursEl.value === "") {
-    weekPercentEl.value = "";
-    resizeWeekPercent();
-  }
-});
-
-resizeWeekPercent();
 
 const logInput = () => {
   if (beginWorkEl.value !== "") {
@@ -47,7 +14,7 @@ const logInput = () => {
     const hBegin = Number(b[0]);
     const mBegin = Number(b[1]);
     const resultNormalEnd = normalEnd(hBegin, mBegin);
-    resultContainerEl.style.visibility = "visible";
+    resultContainerEl.style.display = "flex";
     endDayEl.style.display = "inline-block";
     endDayEl.textContent = `Ende regulär: ${resultNormalEnd}`;
     if (endWorkEl.value !== "") {
@@ -70,7 +37,7 @@ const logInput = () => {
       pauseEl.textContent = "";
     }
   } else {
-    resultContainerEl.style.visibility = "hidden";
+    resultContainerEl.style.display = "none";
     endDayEl.style.display = "none";
     endDayEl.textContent = "";
   }

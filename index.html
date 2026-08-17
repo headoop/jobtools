@@ -11,7 +11,7 @@
 
   <body>
     <header>
-      <h1>Jobtools</h1>
+      <p class="brand">Jobtools</p>
       <nav class="navbar">
         <ul>
           <li><a class="active" href="#">Arbeitszeit</a></li>
@@ -26,13 +26,17 @@
       <h1>Arbeitszeit berechnen</h1>
       <div id="maxi-container">
         <div id="input-container">
-          <label for="beginWork">Beginn:</label>
-          <input type="time" name="beginWork" id="beginWork" value="" />
-          <label for="endWork">Ende:</label>
-          <input type="time" name="endWork" id="endWork" value="" />
+          <div class="input-line">
+            <label for="beginWork">Beginn:</label>
+            <input type="time" name="beginWork" id="beginWork" value="" />
+          </div>
+          <div class="input-line">
+            <label for="endWork">Ende:</label>
+            <input type="time" name="endWork" id="endWork" value="" />
+          </div>
         </div>
         <div id="button-container">
-          <button type="submit" onclick="logInput()"><span>Enter</span></button>
+          <button type="submit" onclick="logInput()">Berechnen</button>
         </div>
         <div id="result-container">
           <p id="endDay"></p>
@@ -40,15 +44,6 @@
           <p id="diffTime"></p>
           <p id="pause"></p>
         </div>
-        <div id="week-container">
-          <label>Wochenarbeitszeit</label>
-          <div id="week-inputs">
-            <input type="number" id="weekPercent" min="0" max="100" step="0.1" placeholder="%" />
-            <span>% =</span>
-            <input type="text" id="weekHours" placeholder="hh:mm" />
-          </div>
-        </div>
-
       </div>
 
     </main>

@@ -1,231 +1,478 @@
+/* ---------------------------------------------------------------
+   jobtools – gemeinsames Designsystem
+   Farben: #2779a7 (Blau), #49c5b6 (Türkis), #DF6C4F (Koralle)
+   --------------------------------------------------------------- */
+
+:root {
+  --blue: #2779a7;
+  --blue-dark: #1e5f84;
+  --blue-tint: #eaf3f8;
+  --teal: #49c5b6;
+  --teal-dark: #35a698;
+  --teal-tint: #e7f8f5;
+  --coral: #df6c4f;
+  --coral-dark: #c8563a;
+  --coral-tint: #fdefe9;
+
+  --ink: #1f2a33;
+  --muted: #5d6f7d;
+  --bg: #f4f7f9;
+  --surface: #ffffff;
+  --border: #dde5ea;
+
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 2px rgba(31, 42, 51, 0.06), 0 10px 30px rgba(31, 42, 51, 0.08);
+  --ring: 0 0 0 3px rgba(73, 197, 182, 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background-color: ivory;
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ---------------------------------------------------------------
+   Kopfbereich und Navigation
+   --------------------------------------------------------------- */
 
 header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
   z-index: 999;
-  background-color: hsl(0, 0%, 35%);
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+  box-shadow: 0 2px 12px rgba(31, 42, 51, 0.15);
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  padding: 15px 25px;
-}
-
-h1 {
-  text-align: center;
+.brand {
+  margin: 0;
+  padding: 18px 25px 0;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .navbar ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin: 0;
-  list-style-type: none;
-  background-color: hsl(0, 0%, 35%);
-  padding: 0;
-  overflow: hidden;
+  padding: 12px 25px 16px;
+  list-style: none;
 }
 
 .navbar a {
-  color: white;
-  text-decoration: none;
-  padding: 15px;
   display: block;
-  text-align: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .navbar a:hover {
-  background-color: hsl(0, 0%, 60%);
-}
-
-.navbar li {
-  float: left;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
 .navbar a.active {
-  /* background-color: hsl(0, 0%, 15%); */
-  background-color: #04AA6D;
+  background-color: var(--teal);
+  color: #10312d;
+  font-weight: 600;
 }
-/* main h2 { */
-/*   font-family: Arial, Helvetica, sans-serif; */
-/* } */
+
+/* ---------------------------------------------------------------
+   Grundgerüst
+   --------------------------------------------------------------- */
 
 main {
-  margin-top: 200px;
-  padding: 15px 25px;
+  flex: 1;
+  width: 100%;
+  padding: 40px 25px 60px;
 }
 
-#maxi-container {
-  min-width: 300px;
+main h1 {
+  margin: 0 auto 28px;
   max-width: 650px;
-  height: 350px;
+  font-size: 1.75rem;
+  font-weight: 600;
   text-align: center;
+}
+
+main h3 {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+footer {
+  padding: 20px 25px 28px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------
+   Karte
+   --------------------------------------------------------------- */
+
+#maxi-container {
+  min-width: 280px;
+  max-width: 650px;
   margin: 0 auto;
-  background-color: #f6b26b;
+  padding: 32px 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
 }
 
 #input-container {
   display: flex;
   flex-direction: column;
-  /* display: flex; */
   align-items: center;
-  margin: 0 0 30px 0;
-  /* min-width: 300px; */
-  /* max-width: 450px; */
-  border: none;
-  padding: 20px 45px;
-  /* border-radius: 5px; */
+  gap: 14px;
+  margin: 0 0 24px;
   text-align: center;
-  background-color: #f6b26b;
 }
 
 .input-line {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.input-line button {
-  margin: 10px;
-  /* display: block; */
-  /* margin: 10px; */
-  padding: 20px 45px;
-  width: 180px;
+/* Beschriftung, Eingabe und Button zeilenübergreifend bündig */
+.form-grid {
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
 }
 
-#button-container {
-  /* display: flex; */
-  /* align-items: center; */
-  /* margin: 0 60px 0 60px; */
-  /* min-width: 300px; */
-  /* max-width: 450px; */
-  /* width: 392px; */
-  border: none;
-  /* padding: 20px 45px; */
-  /* border-radius: 5px; */
-  text-align: center;
+.form-grid label {
+  text-align: right;
 }
 
-#result-container {
-  /* display: flex; */
-  /* flex-direction: column; */
-  visibility: hidden;
-  /* align-items: center; */
-  /* width: 300px; */
-  margin: 30px 0 0 0;
-  /* min-width: 300px; */
-  /* max-width: 450px; */
-  /* height: 180px; */
-  border: none;
-  /* padding: 20px 45px; */
-  /* border-radius: 5px; */
-  text-align: center;
-  background-color: #6aa84f;
+.form-grid input {
+  width: 8rem;
 }
+
+label {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------
+   Formularelemente
+   --------------------------------------------------------------- */
+
+input[type="time"],
+input[type="date"],
+input[type="number"],
+input[type="text"] {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.05rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="time"]:hover,
+input[type="date"]:hover,
+input[type="number"]:hover,
+input[type="text"]:hover {
+  border-color: var(--teal);
+}
+
+input:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: var(--ring);
+}
+
+/* Optionsfelder als Segmente */
+
+.option-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.option-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.option-group label {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-group label:hover {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+}
+
+.option-group input[type="radio"]:checked + label {
+  border-color: var(--teal);
+  background-color: var(--teal);
+  color: #10312d;
+  font-weight: 600;
+}
+
+.option-group input[type="radio"]:focus-visible + label {
+  box-shadow: var(--ring);
+}
+
+/* ---------------------------------------------------------------
+   Buttons
+   --------------------------------------------------------------- */
 
 button {
-  margin: 0 auto;
-  display: block;
-  width: 30%;
-  /* width: 300px; */
-  padding: 10px 0px;
-  border-radius: 5px;
-  /* https://www.color-hex.com/color/f44336 */
-  background-color: #f44336;
-  font-size: 1.3rem;
-  cursor: pointer;
-  outline: none;
+  padding: 11px 28px;
   border: none;
-  /* box-shadow: 0 6px #999; */
-  /* transition: all 0.4s ease; */
-  /* transition: margin 0.4s ease; */
-}
-
-button span {
-  display: inline-block;
+  border-radius: var(--radius-sm);
+  background-color: var(--coral);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(223, 108, 79, 0.35);
+  transition: background-color 0.2s ease, transform 0.1s ease,
+    box-shadow 0.2s ease;
 }
 
 button:hover {
-  /* background-color: #f44336; */
-  /* background-color: #f55a4e; */
-  background-color: #db3c30;
-  scale: 1.03;
+  background-color: var(--coral-dark);
+  box-shadow: 0 4px 12px rgba(223, 108, 79, 0.4);
 }
 
-button:hover span {
-  transform: scale(0.9709);
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
 }
 
 button:active {
-  /* background-color: #3e8e41; */
-  background-color: #6aa84f;
-  box-shadow: 0 4px #666;
-  transform: translateY(3px);
+  transform: translateY(2px);
+  box-shadow: 0 1px 3px rgba(223, 108, 79, 0.35);
 }
 
-#workTime, #endDay, #diffTime, #pause {
+#button-container {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 0;
+}
+
+/* ---------------------------------------------------------------
+   Ergebnisse
+   --------------------------------------------------------------- */
+
+/* Sichtbarkeit steuern index.js bzw. ages.js über display */
+#result-container {
   display: none;
-  /* padding: 5px 10px; */
-  margin: 8px;
-  background-color: #6aa84f;
+  flex-direction: column;
+  gap: 8px;
+  margin: 26px 0 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-sm);
+  background-color: var(--blue-tint);
+  text-align: left;
 }
 
-input[type=time] {
-  margin-left: 5px;
-  margin-right: 5px;
-  font-size: 1.1rem;
-  border-radius: 4px;
-  border: none;
+#result-container p {
+  margin: 0;
+  font-size: 1.05rem;
 }
 
-footer b {
-  text-decoration: none;
+#result-container span {
+  color: var(--blue-dark);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
-#week-container {
+/* Ergebniszeilen der Arbeitszeitberechnung – Sichtbarkeit steuert index.js */
+#workTime,
+#endDay,
+#diffTime,
+#pause {
+  display: none;
+}
+
+.result-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
-  width: 300px;
-  border: none;
-  padding: 20px 45px;
-  border-radius: 5px;
-  text-align: center;
-  background-color: #6fa8dc;
+  margin: 26px 0 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-sm);
+  background-color: var(--blue-tint);
+  text-align: left;
 }
 
-#week-inputs {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+/* Ergebnisbox ausblenden, bis ein Wert berechnet wurde */
+.result-box:not(:has(.value:not(:empty))) {
+  display: none;
 }
 
-#weekPercent {
-  min-width: 3ch;
-  font-size: 1.1rem;
-  border-radius: 4px;
-  border: none;
-  text-align: right;
-  -moz-appearance: textfield;
-}
-
-#weekPercent::-webkit-outer-spin-button,
-#weekPercent::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+.result-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+  gap: 12px 18px;
   margin: 0;
 }
 
-#weekHours {
-  width: 60px;
-  font-size: 1.1rem;
-  border-radius: 4px;
-  border: none;
-  text-align: right;
+.result-grid dt {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.result-grid dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  color: var(--blue-dark);
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Einheitenkennzeichnung – macht dezimal und hh:mm unterscheidbar */
+.unit {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: var(--teal);
+  color: #10312d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.note {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+/* ---------------------------------------------------------------
+   Zeitraum berechnen
+   --------------------------------------------------------------- */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+
+.field-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.hint {
+  margin: -8px auto 24px;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ---------------------------------------------------------------
+   Kleine Bildschirme
+   --------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  main {
+    padding: 24px 14px 40px;
+  }
+
+  #maxi-container {
+    padding: 24px 18px;
+  }
+
+  .brand,
+  .navbar ul {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .form-grid label {
+    text-align: center;
+  }
+
+  .form-grid input {
+    width: 100%;
+  }
+
+  .form-grid button {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+  }
+
+  .result-grid dd {
+    margin-bottom: 10px;
+  }
 }

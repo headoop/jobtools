@@ -47,7 +47,7 @@ const action = () => {
     let birthday = new Date(birthdayEl.value);
     // console.log(birthday);
     let [age, date18string, date21string] = calcAges(birthday);
-    resultContainerEl.style.visibility = "visible";
+    resultContainerEl.style.display = "flex";
     ageTodayEl.textContent = age;
     dayBefore18El.textContent = date18string;
     dayBefore21El.textContent = date21string;

@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>mehr Ideen</title>
+  <title>Alter berechnen</title>
   <link href="style.css" rel="stylesheet" />
   <script src="ages.js" async></script>
 </head>
 
 <body>
   <header>
-    <h1>Jobtools</h1>
+    <p class="brand">Jobtools</p>
     <nav class="navbar">
       <ul>
         <li><a href="index.html">Arbeitszeit</a></li>
@@ -25,22 +25,24 @@
   <main>
     <h1>Alter berechnen</h1>
     <div id="maxi-container">
-      Berechnet das Alter am heutigen Tag sowie den Tag vor dem 18. und dem
-      21. Geburtstag.<br />
+      <p class="hint">
+        Berechnet das Alter am heutigen Tag sowie den Tag vor dem 18. und dem
+        21. Geburtstag.
+      </p>
 
       <div id="input-container">
-        <input type="date" name="birthday" id="birthday" value="" />
+        <div class="input-line">
+          <label for="birthday">Geburtsdatum:</label>
+          <input type="date" name="birthday" id="birthday" value="" />
+        </div>
       </div>
       <div id="button-container">
-        <button type="submit" onclick="action()">Enter</button>
+        <button type="submit" onclick="action()">Berechnen</button>
       </div>
       <div id="result-container">
-        <p>heutiges Alter:</p>
-        <p id="age-today"></p>
-        <p>Tag vor dem 18.:</p>
-        <p id="day-before-18"></p>
-        <p>Tag vor dem 21.:</p>
-        <p id="day-before-21"></p>
+        <p>heutiges Alter: <span id="age-today"></span></p>
+        <p>Tag vor dem 18.: <span id="day-before-18"></span></p>
+        <p>Tag vor dem 21.: <span id="day-before-21"></span></p>
       </div>
     </div>
   </main>

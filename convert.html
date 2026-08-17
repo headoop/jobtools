@@ -11,7 +11,7 @@
 
 <body>
   <header>
-    <h1>Jobtools</h1>
+    <p class="brand">Jobtools</p>
     <nav class="navbar">
       <ul>
         <li><a href="index.html">Arbeitszeit</a></li>
@@ -27,29 +27,34 @@
     <div id="maxi-container">
 
       <div id="input-container">
-        <h3>Bitte auswählen und Wochenstunden oder Prozent eintragen:</h3>
-        <div class="input-line">
-          <label for="hours">Wochenstunden: </label>
-          <input type="number" name="hours-input" id="hours-input" value="" />
-          <button type="button" onclick="convertHoursToPercent()">convert</button>
-        </div>
+        <h3>Wochenstunden oder Prozent eintragen und umrechnen:</h3>
+        <div class="form-grid">
+          <label for="hours-input">Wochenstunden (dezimal):</label>
+          <input type="number" name="hours-input" id="hours-input" value="" step="any" placeholder="31,2" />
+          <button type="button" onclick="convertHoursToPercent()">
+            umrechnen
+          </button>
 
-        <p></p>
-        <div class="input-line">
-          <label for="percent">Prozent: </label>
-          <input type="number" name="percent-input" id="percent-input" value="" />
-          <button type="button" onclick="convertPercentToHours()">convert</button>
+          <label for="percent-input">Prozent:</label>
+          <input type="number" name="percent-input" id="percent-input" value="" step="any" placeholder="80" />
+          <button type="button" onclick="convertPercentToHours()">
+            umrechnen
+          </button>
         </div>
-        <p></p>
-        <pre id="to-percent"></pre>
-        <pre id="to-hours"></pre>
       </div>
-      <!-- <div id="button-container">
-        <button type="submit" onclick="calcAges()">Enter</button>
-      </div> -->
-      <div id="result-container">
-        <p id="result-week-hours"></p>
-        <p id="result-percent"></p>
+
+      <div class="result-box">
+        <dl class="result-grid">
+          <dt>Anteil</dt>
+          <dd><span class="value" id="value-percent"></span><span class="unit">%</span></dd>
+
+          <dt>Wochenstunden</dt>
+          <dd><span class="value" id="value-hours"></span><span class="unit">dezimal</span></dd>
+
+          <dt>Stunden : Minuten</dt>
+          <dd><span class="value" id="value-hhmm"></span><span class="unit">hh:mm</span></dd>
+        </dl>
+        <p class="note">Stunden und Minuten sind auf ganze Minuten gerundet.</p>
       </div>
     </div>
   </main>
