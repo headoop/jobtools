@@ -179,6 +179,9 @@ header {
   align-items: center;
   gap: 0.5rem;
   padding: 0.4375rem 0.9375rem;
+  /* heller Rand: die türkise Fläche erreicht gegen das Header-Blau nur
+     2,27:1, der weiße Rand macht die Schaltfläche mit 4,80:1 erkennbar */
+  border: 2px solid #fff;
   border-radius: 99rem;  /* Pillenform */
   background-color: var(--teal);
   color: #10312d;
