@@ -90,3 +90,29 @@ Diese vier Vorgaben gelten für jede Änderung an den Seiten:
 
 Der Farbaufbau erfüllt WCAG 2.1 AA; die geprüften Verhältnisse stehen als
 Kommentar im Kopf von `style.css`.
+
+### Prüfung
+
+`tools/a11y-check.sh` prüft die Seiten gegen diese Vorgaben – Kontraste,
+Bedienelemente, Fokusrahmen, Tastaturreihenfolge und Semantik. Nötig ist
+nur ein installiertes Chromium oder Chrome.
+
+```sh
+tools/a11y-check.sh              # alle vier Seiten
+tools/a11y-check.sh convert.html # einzelne Seite
+```
+
+Der Aufruf endet mit 0, wenn alles besteht, sonst mit 1 – nutzbar also
+auch automatisiert. Die eigentlichen Prüfungen stehen in
+`tools/a11y-check.js` und laufen im Browser.
+
+Zwei Eigenheiten, die beim Ändern des Prüfskripts zu beachten sind:
+
+- **Übergänge abschalten.** `getComputedStyle` liefert während einer
+  laufenden `transition` den Startwert; ohne `transition: none` misst man
+  die alte Farbe statt der neuen.
+- **Fokusrahmen aus dem Stylesheet lesen, nicht messen.** Ein per
+  JavaScript gesetzter Fokus löst `:focus-visible` bei Buttons nicht aus.
+  Deshalb bettet das Skript `style.css` in die Prüfseite ein – bei
+  `file://` verweigert der Browser sonst den Zugriff auf `cssRules` – und
+  wertet die Regeln samt ihrer Spezifität aus.
