@@ -70,9 +70,10 @@ for seite in $seiten; do
     --user-data-dir="$profil" --virtual-time-budget=8000 --dump-dom \
     "file://$pruefseite" 2>/dev/null |
     sed -n '/<pre id="a11y-report">/,/<\/pre>/p' |
-    sed -e 's#<pre id="a11y-report">##' -e 's#</pre>##' \
+    sed -e 's#^.*<pre id="a11y-report">##' -e 's#</pre>.*$##' \
         -e 's#&lt;#<#g' -e 's#&gt;#>#g' -e 's#&quot;#"#g' \
-        -e "s/&#39;/'/g" -e 's#&amp;#\&#g')
+        -e "s/&#39;/'/g" -e 's#&amp;#\&#g' \
+        -e '${/^$/d}')
 
   if [ -z "$bericht" ]; then
     echo "=== $seite ==="
