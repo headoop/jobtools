@@ -196,6 +196,25 @@ letzte Tag des Zeitraums.
   und Ruhezeiten.
 - **Keine Feiertage und keine Urlaubsberechnung.**
 
+## Bedienung und Darstellung
+
+- **Alles per Tastatur.** `Tab` führt der Reihe nach durch Navigation,
+  Berechnungsbasis und Eingabefelder. **`Enter` in einem Eingabefeld löst die
+  Berechnung aus** – der Weg über die Maus ist nicht nötig. Im Einstellfeld
+  der Berechnungsbasis speichert `Enter`, `Escape` schließt es und setzt den
+  Fokus zurück auf die Anzeige.
+- **Am Anfang jeder Seite steht ein Sprunglink** „Zum Inhalt springen“. Er
+  wird sichtbar, sobald man ihn mit `Tab` erreicht, und überspringt die
+  Navigation.
+- **Die Anzeige passt sich an.** Bei schmalem Fenster oder vergrößerter
+  Browserschrift stellen sich Formulare und Ergebnislisten von zwei Spalten
+  auf eine um: Die Bezeichnung steht dann über dem Wert. Es entsteht kein
+  waagerechtes Scrollen, auch nicht bei stark vergrößerter Schrift.
+- **Fehlende Pflichteingaben werden benannt** – auf den Seiten *Alter* und
+  *Zeitraum* erscheint ein Hinweis wie „Bitte ein Startdatum wählen.“ Die
+  Seiten *Arbeitszeit* und *Wochenarbeitszeit* zeigen bei leerem Feld
+  stattdessen einfach kein Ergebnis.
+
 ## Technische Hinweise
 
 Vier HTML-Seiten, ein Stylesheet und je ein Skript – kein Build, keine
@@ -204,7 +223,9 @@ und auch direkt von der Festplatte über `file://`.
 
 Die Seiten sind auf Barrierefreiheit ausgelegt: vollständige
 Tastaturbedienung, semantische Auszeichnung für Screenreader, skalierbare
-Schriftgrößen und Farbkontraste nach WCAG 2.1 AA. Geprüft wird das mit
-`tools/a11y-check.sh`.
+Schriftgrößen, Umbruch ohne waagerechtes Scrollen und Farbkontraste nach
+WCAG 2.1 AA. Geprüft wird das mit `tools/a11y-check.sh`; das Skript nimmt
+sich jede Seite zweimal vor – im üblichen Fenster und in einem schmalen mit
+vergrößerter Schrift.
 
 Hinweise für die Weiterentwicklung stehen in `CLAUDE.md`.
