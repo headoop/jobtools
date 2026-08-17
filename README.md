@@ -87,7 +87,7 @@ Schwellen, ab denen das Gesetz die nächste Pausenstufe verlangt.
 - **Gleiche Uhrzeit für Beginn und Ende** ergibt null Minuten, nicht 24
   Stunden. Eine durchgehende 24-Stunden-Schicht lässt sich nicht eingeben.
 - **Nur das Ende leer:** Es wird lediglich das reguläre Schichtende angezeigt.
-- **Beginn leer:** Es erscheint kein Ergebnis.
+- **Beginn leer:** Es erscheint der Hinweis „Bitte einen Beginn eintragen.“
 - Die Pause ist eine **Annahme nach Gesetz**, keine erfasste Zeit. Wer länger
   Pause macht oder sie aufteilt, muss selbst nachrechnen.
 - Es gibt **keine Prüfung auf Höchstarbeitszeit**, Ruhezeiten, Nacht- oder
@@ -122,8 +122,9 @@ zeigt beides zugleich, dazu die Stundenzahl in zwei Schreibweisen:
 - Eingaben mit **Komma oder Punkt** sind beide erlaubt.
 - Es gibt **keine Obergrenze**: 120 % oder 60 Wochenstunden werden berechnet,
   auch wenn das arbeitsrechtlich keinen Sinn ergibt. Negative Werte ebenso.
-- Ein leeres Feld löst keine Berechnung aus; das vorherige Ergebnis bleibt
-  stehen.
+- Ein leeres Feld löst keine Berechnung aus, sondern den Hinweis „Bitte die
+  Wochenstunden eintragen.“ beziehungsweise „Bitte einen Prozentwert
+  eintragen.“ Jede Schaltfläche prüft dabei ihr eigenes Feld.
 - Ändert sich die Berechnungsbasis, wird das angezeigte Ergebnis sofort neu
   berechnet.
 
@@ -210,10 +211,10 @@ letzte Tag des Zeitraums.
   Browserschrift stellen sich Formulare und Ergebnislisten von zwei Spalten
   auf eine um: Die Bezeichnung steht dann über dem Wert. Es entsteht kein
   waagerechtes Scrollen, auch nicht bei stark vergrößerter Schrift.
-- **Fehlende Pflichteingaben werden benannt** – auf den Seiten *Alter* und
-  *Zeitraum* erscheint ein Hinweis wie „Bitte ein Startdatum wählen.“ Die
-  Seiten *Arbeitszeit* und *Wochenarbeitszeit* zeigen bei leerem Feld
-  stattdessen einfach kein Ergebnis.
+- **Fehlende Pflichteingaben werden benannt.** Auf allen vier Seiten
+  erscheint bei leerem Feld ein Hinweis statt wortloser Untätigkeit – etwa
+  „Bitte einen Beginn eintragen.“ Er verschwindet, sobald die Berechnung
+  gelingt, und wird von Screenreadern angesagt.
 
 ## Technische Hinweise
 

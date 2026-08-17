@@ -3,6 +3,7 @@ const valueHoursEl = document.querySelector("#value-hours");
 const valueHhmmEl = document.querySelector("#value-hhmm");
 const valueBasisEl = document.querySelector("#value-basis");
 const resultBoxEl = document.querySelector("#result-box");
+const errorEl = document.querySelector("#convert-error");
 
 // zuletzt berechnete Richtung, damit das Ergebnis einer geänderten
 // Berechnungsbasis folgen kann
@@ -13,12 +14,22 @@ const showResult = (percent, hours) => {
   valueHoursEl.textContent = format(hours);
   valueHhmmEl.textContent = toHoursMinutes(hours);
   valueBasisEl.textContent = `${format(getWeekHours())} h/Woche`;
+  errorEl.hidden = true;
   resultBoxEl.classList.add("is-visible");
+};
+
+const showError = (message) => {
+  errorEl.textContent = message;
+  errorEl.hidden = false;
+  resultBoxEl.classList.remove("is-visible");
 };
 
 const convertPercentToHours = () => {
   const input = document.getElementById("percent-input").value;
-  if (input === "") return;
+  if (input === "") {
+    showError("Bitte einen Prozentwert eintragen.");
+    return;
+  }
   const percent = parseNumber(input);
   lastInput = { mode: "percent", value: percent };
   showResult(percent, getWeekHours() / 100 * percent);
@@ -26,7 +37,10 @@ const convertPercentToHours = () => {
 
 const convertHoursToPercent = () => {
   const input = document.getElementById("hours-input").value;
-  if (input === "") return;
+  if (input === "") {
+    showError("Bitte die Wochenstunden eintragen.");
+    return;
+  }
   const hours = parseNumber(input);
   lastInput = { mode: "hours", value: hours };
   showResult(hours / getWeekHours() * 100, hours);

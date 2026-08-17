@@ -10,6 +10,7 @@ const rowWorkTimeEl = document.getElementById("row-workTime");
 const rowDiffTimeEl = document.getElementById("row-diffTime");
 const rowPauseEl = document.getElementById("row-pause");
 const workFormEl = document.getElementById("work-form");
+const errorEl = document.getElementById("work-error");
 const pauseShort = 30;
 const minutesPerDay = 24 * 60;
 
@@ -17,8 +18,11 @@ const minutesPerDay = 24 * 60;
 // Stundenzahl pro Arbeitstag (siehe settings.js)
 const standardWorkDay = () => Math.round(getDayHours() * 60);
 
-// Ergebnis neu berechnen, wenn die Berechnungsbasis geändert wurde
-document.addEventListener("jobtools:basis", () => logInput());
+// Ergebnis neu berechnen, wenn die Berechnungsbasis geändert wurde – ohne
+// Eingabe gibt es nichts zu rechnen und auch nichts zu bemängeln
+document.addEventListener("jobtools:basis", () => {
+  if (beginWorkEl.value !== "") logInput();
+});
 
 // Absenden per Enter aus den Zeitfeldern heraus, nicht nur per Mausklick
 workFormEl.addEventListener("submit", (event) => {
@@ -31,8 +35,15 @@ const showRow = (row, visible) => {
   row.style.display = visible ? "" : "none";
 };
 
+const showError = (message) => {
+  errorEl.textContent = message;
+  errorEl.hidden = false;
+  resultContainerEl.style.display = "none";
+};
+
 const logInput = () => {
   if (beginWorkEl.value !== "") {
+    errorEl.hidden = true;
     const b = beginWorkEl.value.split(":");
     const hBegin = Number(b[0]);
     const mBegin = Number(b[1]);
@@ -60,9 +71,9 @@ const logInput = () => {
       pauseEl.textContent = "";
     }
   } else {
-    resultContainerEl.style.display = "none";
     showRow(rowEndDayEl, false);
     endDayEl.textContent = "";
+    showError("Bitte einen Beginn eintragen.");
   }
 };
 
