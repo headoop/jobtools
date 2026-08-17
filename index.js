@@ -11,6 +11,7 @@ const rowDiffTimeEl = document.getElementById("row-diffTime");
 const rowPauseEl = document.getElementById("row-pause");
 const workFormEl = document.getElementById("work-form");
 const pauseShort = 30;
+const minutesPerDay = 24 * 60;
 
 // Sollarbeitszeit eines Tages in Minuten – Basis ist die eingestellte
 // Stundenzahl pro Arbeitstag (siehe settings.js)
@@ -67,10 +68,13 @@ const logInput = () => {
 
 const normalEnd = (h, m) => {
   const beginnMin = h * 60 + m;
-  const gesamtMin = beginnMin + standardWorkDay() + pauseShort;
+  const rohMin = beginnMin + standardWorkDay() + pauseShort;
+  // reicht das Schichtende über Mitternacht, zählt die Uhrzeit des Folgetags
+  const gesamtMin = rohMin % minutesPerDay;
   const endStd = Math.floor(gesamtMin / 60);
   const endMin = gesamtMin % 60;
-  return `${endStd}:${endMin.toString().padStart(2, "0")}`;
+  const uhrzeit = `${endStd}:${endMin.toString().padStart(2, "0")}`;
+  return rohMin >= minutesPerDay ? `${uhrzeit} (Folgetag)` : uhrzeit;
 };
 
 const minutesGesamt = (minutes) => {
@@ -84,21 +88,15 @@ const minutesGesamt = (minutes) => {
 
 const minutesDiff = (minutes) => {
   // returns array 'result' of numbers
-  // berechnet Differnez Arbeitszeit zu Standardarbeitsszeit
+  // berechnet Differenz Arbeitszeit zu Standardarbeitszeit
   // in Stunden und Minuten
+  //
+  // Math.trunc statt Math.floor: floor rundet negative Werte abwärts,
+  // -468 Minuten wurden dadurch als 8:48 statt 7:48 ausgewiesen
   const result = [];
-
-  if (minutes < 60 && minutes > -60) {
-    result[0] = 0;
-  } else {
-    if (minutes < 0) {
-      result[0] = Math.abs(Math.floor(minutes / 60));
-    } else {
-      result[0] = Math.floor(minutes / 60);
-    }
-  }
+  result[0] = Math.abs(Math.trunc(minutes / 60));
   result[1] = Math.abs(minutes % 60);
-  result[2] = (minutes < 0) ? "-" : "+";
+  result[2] = minutes < 0 ? "-" : "+";
   return result;
 };
 
@@ -108,6 +106,11 @@ const workTime = (hBegin, mBegin, hEnd, mEnd) => {
   const beginnMin = hBegin * 60 + mBegin;
   const endMin = hEnd * 60 + mEnd;
   let gesamtMin = endMin - beginnMin;
+  // Ende vor Beginn heißt: die Schicht läuft über Mitternacht. Gleiche
+  // Uhrzeit bleibt null, eine 24-Stunden-Schicht ist nicht gemeint.
+  if (gesamtMin < 0) {
+    gesamtMin += minutesPerDay;
+  }
   const times = [];
   let pause;
   switch (true) {
