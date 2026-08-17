@@ -7,8 +7,6 @@ const resultDateEl = document.getElementById("result-date");
 const resultWeekdayEl = document.getElementById("result-weekday");
 const resultDaysEl = document.getElementById("result-days");
 
-const msPerDay = 24 * 60 * 60 * 1000;
-
 const unitNames = {
   days: ["Tag", "Tage"],
   weeks: ["Woche", "Wochen"],
@@ -24,10 +22,12 @@ const parseDateInput = (value) => {
   return new Date(year, month - 1, day);
 };
 
-const addPeriod = (date, amount, unit) => {
-  const days = unit === "weeks" ? amount * 7 : amount;
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-};
+const totalDays = (amount, unit) => (unit === "weeks" ? amount * 7 : amount);
+
+// letzter Tag des Zeitraums: das Startdatum ist bereits Tag 1, deshalb
+// werden nur die restlichen Tage addiert
+const lastDay = (date, days) =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate() + days - 1);
 
 const formatDate = (date) =>
   date.toLocaleDateString("de-DE", {
@@ -62,9 +62,15 @@ const calcDuration = () => {
 
   const amount = Math.trunc(Number(summandEl.value));
   const unit = selectedUnit();
+  // das Startdatum zählt mit, ein Zeitraum umfasst also mindestens einen Tag
+  if (amount < 1) {
+    showError("Bitte eine Zahl ab 1 eintragen – das Startdatum zählt als erster Tag.");
+    return;
+  }
+
   const start = parseDateInput(startEl.value);
-  const end = addPeriod(start, amount, unit);
-  const days = Math.round((end - start) / msPerDay);
+  const days = totalDays(amount, unit);
+  const end = lastDay(start, days);
 
   errorEl.hidden = true;
   resultContainerEl.style.display = "grid";

@@ -29,7 +29,8 @@
     <h1>Zeitraum berechnen</h1>
     <div id="maxi-container">
       <p class="intro">
-        Addiert einen Zeitraum auf ein Startdatum und nennt das künftige Datum.
+        Nennt den letzten Tag eines Zeitraums. Das Startdatum zählt als
+        erster Tag mit.
       </p>
 
       <form id="duration-form">
@@ -67,7 +68,7 @@
       <dl id="result-container" aria-live="polite">
         <!-- Ausgabe: künftiges Datum -> berechnet in durations.js -->
         <div class="result-row">
-          <dt>Enddatum</dt>
+          <dt>Letzter Tag</dt>
           <dd id="result-date"></dd>
         </div>
         <div class="result-row">
@@ -75,7 +76,7 @@
           <dd id="result-weekday"></dd>
         </div>
         <div class="result-row">
-          <dt>Abstand</dt>
+          <dt>Dauer</dt>
           <dd id="result-days"></dd>
         </div>
       </dl>
