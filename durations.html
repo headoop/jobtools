@@ -28,38 +28,58 @@
   <main id="inhalt">
     <h1>Zeitraum berechnen</h1>
     <div id="maxi-container">
-      <div class="field-group" id="div-start">
-        <!-- Startdatum (erster Tag des Zeitraums) -> input date -->
-        <div class="input-line">
-          <label for="start">Startdatum:</label>
-          <input type="date" name="start" id="start">
-        </div>
-      </div>
+      <p class="intro">
+        Addiert einen Zeitraum auf ein Startdatum und nennt das künftige Datum.
+      </p>
 
-      <div class="field-group" id="div-summand">
-        <!-- wieviel addieren? -> input number -->
-        <div class="input-line">
-          <label for="summand">Wieviel addieren?</label>
-          <input type="number" name="summand" id="summand">
+      <form id="duration-form">
+        <div class="field-group" id="div-start">
+          <!-- Startdatum (erster Tag des Zeitraums) -> input date -->
+          <div class="input-line">
+            <label for="start">Startdatum:</label>
+            <input type="date" name="start" id="start">
+          </div>
         </div>
-        <!-- welche Einheit (Tage, Wochen, Monate) -> radio -->
-        <fieldset class="option-group">
-          <legend>Einheit</legend>
-          <input type="radio" name="units" id="radio-days" value="days">
-          <label for="radio-days">Tage</label>
-          <input type="radio" name="units" id="radio-weeks" value="weeks">
-          <label for="radio-weeks">Wochen</label>
-          <input type="radio" name="units" id="radio-months" value="months">
-          <label for="radio-months">Monate</label>
-        </fieldset>
-      </div>
 
-      <div id="button-container">
-        <!-- Button -->
-      </div>
+        <div class="field-group" id="div-summand">
+          <!-- wieviel addieren? -> input number -->
+          <div class="input-line">
+            <label for="summand">Wieviel addieren?</label>
+            <input type="number" name="summand" id="summand" step="1" placeholder="14">
+          </div>
+          <!-- welche Einheit (Tage, Wochen, Monate) -> radio -->
+          <fieldset class="option-group">
+            <legend>Einheit</legend>
+            <input type="radio" name="units" id="radio-days" value="days" checked>
+            <label for="radio-days">Tage</label>
+            <input type="radio" name="units" id="radio-weeks" value="weeks">
+            <label for="radio-weeks">Wochen</label>
+            <input type="radio" name="units" id="radio-months" value="months">
+            <label for="radio-months">Monate</label>
+          </fieldset>
+        </div>
+
+        <div id="button-container">
+          <button type="submit">Berechnen</button>
+        </div>
+      </form>
+
+      <p class="form-error" id="duration-error" role="alert" hidden></p>
 
       <dl id="result-container" aria-live="polite">
-        <!-- Ausgabe: letzter Tag des Zeitraums -> ouput date -->
+        <!-- Ausgabe: künftiges Datum -> berechnet in durations.js -->
+        <div class="result-row">
+          <dt>Enddatum</dt>
+          <dd id="result-date"></dd>
+        </div>
+        <div class="result-row">
+          <dt>Wochentag</dt>
+          <dd id="result-weekday"></dd>
+        </div>
+        <div class="result-row">
+          <dt>Abstand</dt>
+          <dd id="result-days"></dd>
+        </div>
       </dl>
     </div>
   </main>
