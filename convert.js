@@ -1,34 +1,40 @@
 const valuePercentEl = document.querySelector("#value-percent");
 const valueHoursEl = document.querySelector("#value-hours");
 const valueHhmmEl = document.querySelector("#value-hhmm");
-const fullTimeJob = 39;
+const valueBasisEl = document.querySelector("#value-basis");
 
-const format = (number) => number.toFixed(2).replace(".", ",").replace(",00", "");
-
-const toHoursMinutes = (decimalHours) => {
-  // wandelt Dezimalstunden in die Schreibweise hh:mm um (31,2 -> 31:12)
-  const totalMin = Math.round(decimalHours * 60);
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  return `${h}:${m.toString().padStart(2, "0")}`;
-};
+// zuletzt berechnete Richtung, damit das Ergebnis einer geänderten
+// Berechnungsbasis folgen kann
+let lastInput = null;
 
 const showResult = (percent, hours) => {
   valuePercentEl.textContent = format(percent);
   valueHoursEl.textContent = format(hours);
   valueHhmmEl.textContent = toHoursMinutes(hours);
+  valueBasisEl.textContent = `${format(getWeekHours())} h/Woche`;
 };
 
 const convertPercentToHours = () => {
   const input = document.getElementById("percent-input").value;
   if (input === "") return;
-  const percent = Number(input);
-  showResult(percent, fullTimeJob / 100 * percent);
+  const percent = parseNumber(input);
+  lastInput = { mode: "percent", value: percent };
+  showResult(percent, getWeekHours() / 100 * percent);
 }
 
 const convertHoursToPercent = () => {
   const input = document.getElementById("hours-input").value;
   if (input === "") return;
-  const hours = Number(input);
-  showResult(hours / fullTimeJob * 100, hours);
+  const hours = parseNumber(input);
+  lastInput = { mode: "hours", value: hours };
+  showResult(hours / getWeekHours() * 100, hours);
 }
+
+document.addEventListener("jobtools:basis", () => {
+  if (!lastInput) return;
+  if (lastInput.mode === "percent") {
+    showResult(lastInput.value, getWeekHours() / 100 * lastInput.value);
+  } else {
+    showResult(lastInput.value / getWeekHours() * 100, lastInput.value);
+  }
+});

@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wochenarbeitszeit konvertieren</title>
   <link href="style.css" rel="stylesheet" />
-  <script src="convert.js" async></script>
+  <script src="settings.js" defer></script>
+  <script src="convert.js" defer></script>
 </head>
 
 <body>
@@ -30,13 +31,13 @@
         <h3>Wochenstunden oder Prozent eintragen und umrechnen:</h3>
         <div class="form-grid">
           <label for="hours-input">Wochenstunden (dezimal):</label>
-          <input type="number" name="hours-input" id="hours-input" value="" step="any" placeholder="31,2" />
+          <input type="text" inputmode="decimal" name="hours-input" id="hours-input" value="" placeholder="31,2" />
           <button type="button" onclick="convertHoursToPercent()">
             umrechnen
           </button>
 
           <label for="percent-input">Prozent:</label>
-          <input type="number" name="percent-input" id="percent-input" value="" step="any" placeholder="80" />
+          <input type="text" inputmode="decimal" name="percent-input" id="percent-input" value="" placeholder="80" />
           <button type="button" onclick="convertPercentToHours()">
             umrechnen
           </button>
@@ -53,6 +54,9 @@
 
           <dt>Stunden : Minuten</dt>
           <dd><span class="value" id="value-hhmm"></span><span class="unit">hh:mm</span></dd>
+
+          <dt>Berechnungsbasis</dt>
+          <dd><span class="basis" id="value-basis"></span></dd>
         </dl>
         <p class="note">Stunden und Minuten sind auf ganze Minuten gerundet.</p>
       </div>

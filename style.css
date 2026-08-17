@@ -53,17 +53,30 @@ header {
   position: sticky;
   top: 0;
   z-index: 999;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 25px 0;
   background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
   box-shadow: 0 2px 12px rgba(31, 42, 51, 0.15);
 }
 
+/* Reihenfolge im Header: Titel, Basis-Anzeige, darunter die Navigation.
+   settings.js hängt die Basis-Anzeige ans Ende des Headers. */
 .brand {
+  order: 1;
+  flex: 1 1 auto;
   margin: 0;
-  padding: 18px 25px 0;
   color: #fff;
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+.navbar {
+  order: 3;
+  flex: 1 1 100%;
 }
 
 .navbar ul {
@@ -71,7 +84,7 @@ header {
   flex-wrap: wrap;
   gap: 6px;
   margin: 0;
-  padding: 12px 25px 16px;
+  padding: 12px 0 16px;
   list-style: none;
 }
 
@@ -94,6 +107,136 @@ header {
   background-color: var(--teal);
   color: #10312d;
   font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   Berechnungsbasis: Anzeige im Header und Einstellbereich
+   --------------------------------------------------------------- */
+
+.settings {
+  order: 2;
+  position: relative;
+}
+
+.settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background-color: var(--teal);
+  color: #10312d;
+  font-size: 0.85rem;
+  box-shadow: none;
+}
+
+.settings-toggle:hover {
+  background-color: var(--teal-dark);
+  box-shadow: none;
+}
+
+/* abweichende Basis fällt farblich auf */
+.settings-toggle.is-custom {
+  background-color: var(--coral);
+  color: #fff;
+}
+
+.settings-toggle.is-custom:hover {
+  background-color: var(--coral-dark);
+}
+
+.settings-label {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.settings-icon {
+  font-size: 1rem;
+}
+
+.settings-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(330px, calc(100vw - 28px));
+  padding: 18px 20px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.settings-panel[hidden],
+.settings-error[hidden],
+.settings-note[hidden] {
+  display: none;
+}
+
+.settings-panel h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.settings-panel label {
+  margin-top: 6px;
+}
+
+.settings-panel input {
+  width: 100%;
+}
+
+.settings-hint {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.settings-error {
+  margin: 8px 0 0;
+  color: var(--coral-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.settings-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.settings-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.settings-actions button {
+  padding: 8px 18px;
+  font-size: 0.95rem;
+}
+
+.link-button {
+  padding: 0;
+  background: none;
+  color: var(--blue);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: underline;
+  box-shadow: none;
+}
+
+.link-button:hover {
+  background: none;
+  color: var(--blue-dark);
+  box-shadow: none;
 }
 
 /* ---------------------------------------------------------------
@@ -389,6 +532,13 @@ button:active {
   font-variant-numeric: tabular-nums;
 }
 
+/* Berechnungsbasis steht unauffälliger als die Ergebniswerte */
+.result-grid .basis {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
 /* Einheitenkennzeichnung – macht dezimal und hh:mm unterscheidbar */
 .unit {
   padding: 2px 10px;
@@ -443,10 +593,14 @@ button:active {
     padding: 24px 18px;
   }
 
-  .brand,
-  .navbar ul {
+  header {
     padding-left: 14px;
     padding-right: 14px;
+  }
+
+  .settings-toggle {
+    font-size: 0.78rem;
+    padding: 6px 12px;
   }
 
   .form-grid {

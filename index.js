@@ -5,8 +5,14 @@ const workTimeEl = document.getElementById("workTime");
 const diffTimeEl = document.getElementById("diffTime");
 const pauseEl = document.getElementById("pause");
 const resultContainerEl = document.getElementById("result-container");
-const standardWorkDay = 468;
 const pauseShort = 30;
+
+// Sollarbeitszeit eines Tages in Minuten – Basis ist die eingestellte
+// Stundenzahl pro Arbeitstag (siehe settings.js)
+const standardWorkDay = () => Math.round(getDayHours() * 60);
+
+// Ergebnis neu berechnen, wenn die Berechnungsbasis geändert wurde
+document.addEventListener("jobtools:basis", () => logInput());
 
 const logInput = () => {
   if (beginWorkEl.value !== "") {
@@ -45,7 +51,7 @@ const logInput = () => {
 
 const normalEnd = (h, m) => {
   const beginnMin = h * 60 + m;
-  const gesamtMin = beginnMin + standardWorkDay + pauseShort;
+  const gesamtMin = beginnMin + standardWorkDay() + pauseShort;
   const endStd = Math.floor(gesamtMin / 60);
   const endMin = gesamtMin % 60;
   return `${endStd}:${endMin.toString().padStart(2, "0")}`;
@@ -92,21 +98,21 @@ const workTime = (hBegin, mBegin, hEnd, mEnd) => {
     case gesamtMin <= 360:
       pause = 0;
       times.push(...minutesGesamt(gesamtMin));
-      times.push(...minutesDiff(gesamtMin - standardWorkDay));
+      times.push(...minutesDiff(gesamtMin - standardWorkDay()));
       times.push(pause);
       break;
     case gesamtMin > 360 && gesamtMin < 390:
       pause = gesamtMin - 360;
       gesamtMin = gesamtMin - pause;
       times.push(...minutesGesamt(gesamtMin));
-      times.push(...minutesDiff(gesamtMin - standardWorkDay));
+      times.push(...minutesDiff(gesamtMin - standardWorkDay()));
       times.push(pause);
       break;
     case gesamtMin >= 390 && gesamtMin <= 540:
       pause = 30;
       gesamtMin = gesamtMin - pause;
       times.push(...minutesGesamt(gesamtMin));
-      times.push(...minutesDiff(gesamtMin - standardWorkDay));
+      times.push(...minutesDiff(gesamtMin - standardWorkDay()));
       times.push(pause);
       break;
     case gesamtMin > 540 && gesamtMin < 585:
@@ -114,14 +120,14 @@ const workTime = (hBegin, mBegin, hEnd, mEnd) => {
       pause = pause < 30 ? 30 : gesamtMin - 540;
       gesamtMin = gesamtMin - pause;
       times.push(...minutesGesamt(gesamtMin));
-      times.push(...minutesDiff(gesamtMin - standardWorkDay));
+      times.push(...minutesDiff(gesamtMin - standardWorkDay()));
       times.push(pause);
       break;
     case gesamtMin >= 585:
       pause = 45;
       gesamtMin = gesamtMin - pause;
       times.push(...minutesGesamt(gesamtMin));
-      times.push(...minutesDiff(gesamtMin - standardWorkDay));
+      times.push(...minutesDiff(gesamtMin - standardWorkDay()));
       times.push(pause);
       break;
   }
