@@ -30,7 +30,7 @@
     <div id="maxi-container">
       <p class="hint">
         Berechnet das Alter am heutigen Tag sowie den Tag vor dem 18. und dem
-        21. Geburtstag.
+        21. Geburtstag. Mit einem Zieldatum zusätzlich das Alter an diesem Tag.
       </p>
 
       <form id="age-form">
@@ -39,11 +39,17 @@
             <label for="birthday">Geburtsdatum:</label>
             <input type="date" name="birthday" id="birthday" value="" />
           </div>
+          <div class="input-line">
+            <label for="target">Zieldatum (optional):</label>
+            <input type="date" name="target" id="target" value="" />
+          </div>
         </div>
         <div id="button-container">
           <button type="submit">Berechnen</button>
         </div>
       </form>
+
+      <p class="form-error" id="age-error" role="alert" hidden></p>
 
       <dl id="result-container" aria-live="polite">
         <div class="result-row">
@@ -57,6 +63,12 @@
         <div class="result-row">
           <dt>Tag vor dem 21.</dt>
           <dd id="day-before-21"></dd>
+        </div>
+        <!-- erscheint nur, wenn ein Zieldatum eingetragen wurde; ages.js
+             schaltet zwischen "none" und dem Standardwert aus dem Stylesheet -->
+        <div class="result-row" id="row-age-target" style="display: none">
+          <dt id="age-target-label">Alter am Zieldatum</dt>
+          <dd id="age-target"></dd>
         </div>
       </dl>
     </div>
