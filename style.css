@@ -139,6 +139,9 @@ header {
 .navbar a {
   display: block;
   padding: 0.5rem 1rem;
+  /* durchsichtiger Rand hält alle Einträge gleich groß; nur die aktive
+     Seite färbt ihn ein, sonst würde sie beim Wechsel springen */
+  border: 2px solid transparent;
   border-radius: 99rem;  /* Pillenform */
   /* volle Deckkraft: mit 85 % lag der Kontrast bei 3,95:1 */
   color: #fff;
@@ -159,7 +162,10 @@ header {
   outline-offset: 2px;
 }
 
+/* heller Rand wie beim Basis-Chip: die türkise Fläche erreicht gegen das
+   Header-Blau nur 2,27:1, der Rand macht die Pille mit 4,80:1 erkennbar */
 .navbar a.active {
+  border-color: #fff;
   background-color: var(--teal);
   color: #10312d;
   font-weight: 600;
