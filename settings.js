@@ -80,7 +80,8 @@ const buildSettings = () => {
             aria-expanded="false" aria-controls="settings-panel">
       <span class="settings-label">Basis:</span>
       <span class="settings-value" id="settings-summary"></span>
-      <span class="settings-icon" aria-hidden="true">&#9881;</span>
+      <!-- FE0E erzwingt die monochrome Textdarstellung (Windows sonst farbig) -->
+      <span class="settings-icon" aria-hidden="true">&#9881;&#xFE0E;</span>
     </button>
     <div class="settings-panel" id="settings-panel" hidden>
       <h2>Berechnungsbasis</h2>

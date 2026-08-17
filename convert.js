@@ -2,6 +2,7 @@ const valuePercentEl = document.querySelector("#value-percent");
 const valueHoursEl = document.querySelector("#value-hours");
 const valueHhmmEl = document.querySelector("#value-hhmm");
 const valueBasisEl = document.querySelector("#value-basis");
+const resultBoxEl = document.querySelector("#result-box");
 
 // zuletzt berechnete Richtung, damit das Ergebnis einer geänderten
 // Berechnungsbasis folgen kann
@@ -12,6 +13,7 @@ const showResult = (percent, hours) => {
   valueHoursEl.textContent = format(hours);
   valueHhmmEl.textContent = toHoursMinutes(hours);
   valueBasisEl.textContent = `${format(getWeekHours())} h/Woche`;
+  resultBoxEl.classList.add("is-visible");
 };
 
 const convertPercentToHours = () => {

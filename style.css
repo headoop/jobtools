@@ -489,8 +489,9 @@ button:active {
   display: none;
 }
 
+/* verborgen, bis convert.js nach der ersten Berechnung .is-visible setzt */
 .result-box {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 8px;
   margin: 26px 0 0;
@@ -502,9 +503,8 @@ button:active {
   text-align: left;
 }
 
-/* Ergebnisbox ausblenden, bis ein Wert berechnet wurde */
-.result-box:not(:has(.value:not(:empty))) {
-  display: none;
+.result-box.is-visible {
+  display: flex;
 }
 
 .result-grid {
