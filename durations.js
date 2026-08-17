@@ -12,7 +12,6 @@ const msPerDay = 24 * 60 * 60 * 1000;
 const unitNames = {
   days: ["Tag", "Tage"],
   weeks: ["Woche", "Wochen"],
-  months: ["Monat", "Monate"],
 };
 
 const selectedUnit = () =>
@@ -25,20 +24,7 @@ const parseDateInput = (value) => {
   return new Date(year, month - 1, day);
 };
 
-const addMonths = (date, count) => {
-  const result = new Date(date.getFullYear(), date.getMonth() + count, date.getDate());
-  // den 31. gibt es nicht in jedem Monat: 31.01. + 1 Monat ergibt sonst den
-  // 03.03. – setDate(0) begrenzt auf den letzten Tag des Zielmonats
-  if (result.getDate() !== date.getDate()) {
-    result.setDate(0);
-  }
-  return result;
-};
-
 const addPeriod = (date, amount, unit) => {
-  if (unit === "months") {
-    return addMonths(date, amount);
-  }
   const days = unit === "weeks" ? amount * 7 : amount;
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 };
