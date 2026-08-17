@@ -1,6 +1,10 @@
 /* ---------------------------------------------------------------
    jobtools – gemeinsames Designsystem
    Farben: #2779a7 (Blau), #49c5b6 (Türkis), #DF6C4F (Koralle)
+
+   Koralle und Türkis tragen in Text- und Bedienrollen abgedunkelte
+   Varianten, damit die Kontraste WCAG 2.1 AA erfüllen. Der Türkiston
+   bleibt als Fläche mit dunkler Schrift unverändert (6,63:1).
    --------------------------------------------------------------- */
 
 :root {
@@ -10,20 +14,22 @@
   --teal: #49c5b6;
   --teal-dark: #35a698;
   --teal-tint: #e7f8f5;
-  --coral: #df6c4f;
-  --coral-dark: #c8563a;
+  --coral: #d14826;      /* weiße Schrift darauf: 4,50:1 */
+  --coral-dark: #b73f21; /* Hover und Fehlertext: 5,61:1 */
   --coral-tint: #fdefe9;
 
   --ink: #1f2a33;
   --muted: #5d6f7d;
   --bg: #f4f7f9;
   --surface: #ffffff;
-  --border: #dde5ea;
+  --border: #dde5ea;        /* Karten und Trennlinien, rein dekorativ */
+  --border-input: #7393a9;  /* Bedienelemente: 3,24:1 auf Weiß, 3,01:1 auf --bg */
+  --focus: #35a598;         /* Fokusfarbe, 3,01:1 gegen Weiß */
 
   --radius: 14px;
   --radius-sm: 8px;
   --shadow: 0 1px 2px rgba(31, 42, 51, 0.06), 0 10px 30px rgba(31, 42, 51, 0.08);
-  --ring: 0 0 0 3px rgba(73, 197, 182, 0.35);
+  --ring: 0 0 0 3px rgba(53, 165, 152, 0.45);
 }
 
 *,
@@ -92,7 +98,8 @@ header {
   display: block;
   padding: 8px 16px;
   border-radius: 999px;
-  color: rgba(255, 255, 255, 0.85);
+  /* volle Deckkraft: mit 85 % lag der Kontrast bei 3,95:1 */
+  color: #fff;
   font-size: 0.95rem;
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -101,6 +108,13 @@ header {
 .navbar a:hover {
   background-color: rgba(255, 255, 255, 0.15);
   color: #fff;
+}
+
+/* im Header trägt Weiß den Fokus (4,80:1), Türkis käme dort nur auf 1,6:1 */
+.navbar a:focus-visible,
+.settings-toggle:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
 }
 
 .navbar a.active {
@@ -277,7 +291,7 @@ footer p {
 }
 
 footer a {
-  color: var(--blue);
+  color: var(--blue-dark);
   text-decoration: none;
 }
 
@@ -350,7 +364,7 @@ input[type="date"],
 input[type="number"],
 input[type="text"] {
   padding: 9px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-sm);
   background-color: var(--surface);
   color: var(--ink);
@@ -363,12 +377,12 @@ input[type="time"]:hover,
 input[type="date"]:hover,
 input[type="number"]:hover,
 input[type="text"]:hover {
-  border-color: var(--teal);
+  border-color: var(--focus);
 }
 
 input:focus-visible {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--focus);
   box-shadow: var(--ring);
 }
 
@@ -389,27 +403,28 @@ input:focus-visible {
 
 .option-group label {
   padding: 8px 18px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-input);
   border-radius: 999px;
   background-color: var(--surface);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+/* Textfarbe bleibt --muted (5,20:1); Türkis als Text erreichte nur 2,97:1 */
 .option-group label:hover {
-  border-color: var(--teal);
-  color: var(--teal-dark);
+  border-color: var(--focus);
 }
 
 .option-group input[type="radio"]:checked + label {
-  border-color: var(--teal);
+  border-color: var(--focus);
   background-color: var(--teal);
   color: #10312d;
   font-weight: 600;
 }
 
 .option-group input[type="radio"]:focus-visible + label {
-  box-shadow: var(--ring);
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 /* ---------------------------------------------------------------
@@ -426,24 +441,25 @@ button {
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(223, 108, 79, 0.35);
+  box-shadow: 0 2px 6px rgba(209, 72, 38, 0.35);
   transition: background-color 0.2s ease, transform 0.1s ease,
     box-shadow 0.2s ease;
 }
 
 button:hover {
   background-color: var(--coral-dark);
-  box-shadow: 0 4px 12px rgba(223, 108, 79, 0.4);
+  box-shadow: 0 4px 12px rgba(209, 72, 38, 0.4);
 }
 
+/* durchgehender Rahmen statt Schatten: erreicht die 3:1 gegen jeden Untergrund */
 button:focus-visible {
-  outline: none;
-  box-shadow: var(--ring);
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 button:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 3px rgba(223, 108, 79, 0.35);
+  box-shadow: 0 1px 3px rgba(209, 72, 38, 0.35);
 }
 
 #button-container {
