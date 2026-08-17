@@ -5,6 +5,11 @@ const workTimeEl = document.getElementById("workTime");
 const diffTimeEl = document.getElementById("diffTime");
 const pauseEl = document.getElementById("pause");
 const resultContainerEl = document.getElementById("result-container");
+const rowEndDayEl = document.getElementById("row-endDay");
+const rowWorkTimeEl = document.getElementById("row-workTime");
+const rowDiffTimeEl = document.getElementById("row-diffTime");
+const rowPauseEl = document.getElementById("row-pause");
+const workFormEl = document.getElementById("work-form");
 const pauseShort = 30;
 
 // Sollarbeitszeit eines Tages in Minuten – Basis ist die eingestellte
@@ -14,37 +19,48 @@ const standardWorkDay = () => Math.round(getDayHours() * 60);
 // Ergebnis neu berechnen, wenn die Berechnungsbasis geändert wurde
 document.addEventListener("jobtools:basis", () => logInput());
 
+// Absenden per Enter aus den Zeitfeldern heraus, nicht nur per Mausklick
+workFormEl.addEventListener("submit", (event) => {
+  event.preventDefault();
+  logInput();
+});
+
+// leere Zeile ausblenden; "" stellt den Wert aus dem Stylesheet wieder her
+const showRow = (row, visible) => {
+  row.style.display = visible ? "" : "none";
+};
+
 const logInput = () => {
   if (beginWorkEl.value !== "") {
     const b = beginWorkEl.value.split(":");
     const hBegin = Number(b[0]);
     const mBegin = Number(b[1]);
     const resultNormalEnd = normalEnd(hBegin, mBegin);
-    resultContainerEl.style.display = "flex";
-    endDayEl.style.display = "inline-block";
-    endDayEl.textContent = `Ende regulär: ${resultNormalEnd}`;
+    resultContainerEl.style.display = "grid";
+    showRow(rowEndDayEl, true);
+    endDayEl.textContent = resultNormalEnd;
     if (endWorkEl.value !== "") {
       const e = endWorkEl.value.split(":");
       const hEnd = Number(e[0]);
       const mEnd = Number(e[1]);
       const resultWorkTime = workTime(hBegin, mBegin, hEnd, mEnd);
-      workTimeEl.style.display = "inline-block";
-      workTimeEl.textContent = `Arbeitszeit: ${resultWorkTime[0]}:${resultWorkTime[1].toString().padStart(2, "0")}`;
-      diffTimeEl.style.display = "inline-block";
-      diffTimeEl.textContent = `Differenz: ${resultWorkTime[4]}${resultWorkTime[2]}:${resultWorkTime[3].toString().padStart(2, "0")}`
-      pauseEl.style.display = "inline-block";
-      pauseEl.textContent = `Pause: ${resultWorkTime[5]}`;
+      showRow(rowWorkTimeEl, true);
+      workTimeEl.textContent = `${resultWorkTime[0]}:${resultWorkTime[1].toString().padStart(2, "0")}`;
+      showRow(rowDiffTimeEl, true);
+      diffTimeEl.textContent = `${resultWorkTime[4]}${resultWorkTime[2]}:${resultWorkTime[3].toString().padStart(2, "0")}`
+      showRow(rowPauseEl, true);
+      pauseEl.textContent = `${resultWorkTime[5]} Minuten`;
     } else {
-      workTimeEl.style.display = "none";
+      showRow(rowWorkTimeEl, false);
       workTimeEl.textContent = "";
-      diffTimeEl.style.display = "none";
+      showRow(rowDiffTimeEl, false);
       diffTimeEl.textContent = "";
-      pauseEl.style.display = "none";
+      showRow(rowPauseEl, false);
       pauseEl.textContent = "";
     }
   } else {
     resultContainerEl.style.display = "none";
-    endDayEl.style.display = "none";
+    showRow(rowEndDayEl, false);
     endDayEl.textContent = "";
   }
 };

@@ -4,26 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zeitraum berechnen</title>
+  <title>Zeitraum berechnen – Jobtools</title>
   <link href="style.css" rel="stylesheet" />
   <script src="settings.js" defer></script>
   <script src="durations.js" defer></script>
 </head>
 
 <body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
   <header>
     <p class="brand">Jobtools</p>
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Hauptnavigation">
       <ul>
         <li><a href="index.html">Arbeitszeit</a></li>
         <li><a href="convert.html">Wochenarbeitszeit</a></li>
         <li><a href="ages.html">Alter berechnen</a></li>
-        <li><a class="active" href="#">Zeitraum berechnen</a></li>
+        <li><a class="active" href="durations.html" aria-current="page">Zeitraum berechnen</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="inhalt">
     <h1>Zeitraum berechnen</h1>
     <div id="maxi-container">
       <div class="field-group" id="div-start">
@@ -41,28 +43,29 @@
           <input type="number" name="summand" id="summand">
         </div>
         <!-- welche Einheit (Tage, Wochen, Monate) -> radio -->
-        <div class="option-group">
+        <fieldset class="option-group">
+          <legend>Einheit</legend>
           <input type="radio" name="units" id="radio-days" value="days">
           <label for="radio-days">Tage</label>
           <input type="radio" name="units" id="radio-weeks" value="weeks">
           <label for="radio-weeks">Wochen</label>
           <input type="radio" name="units" id="radio-months" value="months">
           <label for="radio-months">Monate</label>
-        </div>
+        </fieldset>
       </div>
 
       <div id="button-container">
         <!-- Button -->
       </div>
 
-      <div id="result-container">
+      <dl id="result-container" aria-live="polite">
         <!-- Ausgabe: letzter Tag des Zeitraums -> ouput date -->
-      </div>
+      </dl>
     </div>
   </main>
 
   <footer>
-    <p>&#9400; <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+    <p>&copy; <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
     </p>
   </footer>
 </body>

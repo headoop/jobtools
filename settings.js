@@ -91,7 +91,7 @@ const buildSettings = () => {
       <label for="setting-day">Stunden pro Arbeitstag</label>
       <input type="text" inputmode="decimal" id="setting-day" />
       <p class="settings-hint" id="settings-hint"></p>
-      <p class="settings-error" id="settings-error" hidden></p>
+      <p class="settings-error" id="settings-error" role="alert" hidden></p>
       <div class="settings-actions">
         <button type="button" id="settings-save">Speichern</button>
         <button type="button" class="link-button" id="settings-reset">
@@ -158,7 +158,7 @@ const buildSettings = () => {
     writeSetting("dayHours", day);
     errorEl.hidden = true;
     showSummary();
-    closePanel();
+    closePanel(true);
     document.dispatchEvent(new CustomEvent("jobtools:basis"));
   };
 
@@ -176,9 +176,12 @@ const buildSettings = () => {
     weekInputEl.focus();
   };
 
-  const closePanel = () => {
+  // Fokus zurück auf die Schaltfläche, sonst landet er bei Tastaturbedienung
+  // wieder am Seitenanfang
+  const closePanel = (returnFocus) => {
     panelEl.hidden = true;
     toggleEl.setAttribute("aria-expanded", "false");
+    if (returnFocus) toggleEl.focus();
   };
 
   toggleEl.addEventListener("click", () => {
@@ -190,7 +193,7 @@ const buildSettings = () => {
   document.getElementById("settings-reset").addEventListener("click", reset);
   panelEl.addEventListener("keydown", (event) => {
     if (event.key === "Enter") save();
-    if (event.key === "Escape") closePanel();
+    if (event.key === "Escape") closePanel(true);
   });
   document.addEventListener("click", (event) => {
     if (!panelEl.hidden && !wrapper.contains(event.target)) closePanel();

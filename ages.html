@@ -4,26 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alter berechnen</title>
+  <title>Alter berechnen – Jobtools</title>
   <link href="style.css" rel="stylesheet" />
   <script src="settings.js" defer></script>
   <script src="ages.js" defer></script>
 </head>
 
 <body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
   <header>
     <p class="brand">Jobtools</p>
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Hauptnavigation">
       <ul>
         <li><a href="index.html">Arbeitszeit</a></li>
         <li><a href="convert.html">Wochenarbeitszeit</a></li>
-        <li><a class="active" href="#">Alter berechnen</a></li>
+        <li><a class="active" href="ages.html" aria-current="page">Alter berechnen</a></li>
         <li><a href="durations.html">Zeitraum berechnen</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="inhalt">
     <h1>Alter berechnen</h1>
     <div id="maxi-container">
       <p class="hint">
@@ -31,26 +33,38 @@
         21. Geburtstag.
       </p>
 
-      <div id="input-container">
-        <div class="input-line">
-          <label for="birthday">Geburtsdatum:</label>
-          <input type="date" name="birthday" id="birthday" value="" />
+      <form id="age-form">
+        <div id="input-container">
+          <div class="input-line">
+            <label for="birthday">Geburtsdatum:</label>
+            <input type="date" name="birthday" id="birthday" value="" />
+          </div>
         </div>
-      </div>
-      <div id="button-container">
-        <button type="submit" onclick="action()">Berechnen</button>
-      </div>
-      <div id="result-container">
-        <p>heutiges Alter: <span id="age-today"></span></p>
-        <p>Tag vor dem 18.: <span id="day-before-18"></span></p>
-        <p>Tag vor dem 21.: <span id="day-before-21"></span></p>
-      </div>
+        <div id="button-container">
+          <button type="submit">Berechnen</button>
+        </div>
+      </form>
+
+      <dl id="result-container" aria-live="polite">
+        <div class="result-row">
+          <dt>heutiges Alter</dt>
+          <dd id="age-today"></dd>
+        </div>
+        <div class="result-row">
+          <dt>Tag vor dem 18.</dt>
+          <dd id="day-before-18"></dd>
+        </div>
+        <div class="result-row">
+          <dt>Tag vor dem 21.</dt>
+          <dd id="day-before-21"></dd>
+        </div>
+      </dl>
     </div>
   </main>
 
   <footer>
     <p>
-      &#9400;
+      &copy;
       <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
     </p>
   </footer>

@@ -32,6 +32,22 @@ const convertHoursToPercent = () => {
   showResult(hours / getWeekHours() * 100, hours);
 }
 
+// Bedienung per Maus und per Tastatur: Klick auf den Button oder Enter im Feld
+const hoursInputEl = document.getElementById("hours-input");
+const percentInputEl = document.getElementById("percent-input");
+
+document.getElementById("hours-button")
+  .addEventListener("click", convertHoursToPercent);
+document.getElementById("percent-button")
+  .addEventListener("click", convertPercentToHours);
+
+hoursInputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") convertHoursToPercent();
+});
+percentInputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") convertPercentToHours();
+});
+
 document.addEventListener("jobtools:basis", () => {
   if (!lastInput) return;
   if (lastInput.mode === "percent") {

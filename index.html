@@ -4,18 +4,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>jobtools</title>
+    <title>Arbeitszeit berechnen – Jobtools</title>
     <link href="style.css" rel="stylesheet" />
     <script src="settings.js" defer></script>
     <script src="index.js" defer></script>
   </head>
 
   <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
     <header>
       <p class="brand">Jobtools</p>
-      <nav class="navbar">
+      <nav class="navbar" aria-label="Hauptnavigation">
         <ul>
-          <li><a class="active" href="#">Arbeitszeit</a></li>
+          <li><a class="active" href="index.html" aria-current="page">Arbeitszeit</a></li>
           <li><a href="convert.html">Wochenarbeitszeit</a></li>
           <li><a href="ages.html">Alter berechnen</a></li>
           <li><a href="durations.html">Zeitraum berechnen</a></li>
@@ -23,34 +25,50 @@
       </nav>
     </header>
 
-    <main>
+    <main id="inhalt">
       <h1>Arbeitszeit berechnen</h1>
       <div id="maxi-container">
-        <div id="input-container">
-          <div class="input-line">
-            <label for="beginWork">Beginn:</label>
-            <input type="time" name="beginWork" id="beginWork" value="" />
+        <form id="work-form">
+          <div id="input-container">
+            <div class="input-line">
+              <label for="beginWork">Beginn:</label>
+              <input type="time" name="beginWork" id="beginWork" value="" />
+            </div>
+            <div class="input-line">
+              <label for="endWork">Ende:</label>
+              <input type="time" name="endWork" id="endWork" value="" />
+            </div>
           </div>
-          <div class="input-line">
-            <label for="endWork">Ende:</label>
-            <input type="time" name="endWork" id="endWork" value="" />
+          <div id="button-container">
+            <button type="submit">Berechnen</button>
           </div>
-        </div>
-        <div id="button-container">
-          <button type="submit" onclick="logInput()">Berechnen</button>
-        </div>
-        <div id="result-container">
-          <p id="endDay"></p>
-          <p id="workTime"></p>
-          <p id="diffTime"></p>
-          <p id="pause"></p>
-        </div>
-      </div>
+        </form>
 
+        <dl id="result-container" aria-live="polite">
+          <div class="result-row" id="row-endDay">
+            <dt>Ende regulär</dt>
+            <dd id="endDay"></dd>
+          </div>
+          <div class="result-row" id="row-workTime">
+            <dt>Arbeitszeit</dt>
+            <dd id="workTime"></dd>
+          </div>
+          <div class="result-row" id="row-diffTime">
+            <dt>Differenz</dt>
+            <dd id="diffTime"></dd>
+          </div>
+          <div class="result-row" id="row-pause">
+            <dt>Pause</dt>
+            <dd id="pause"></dd>
+          </div>
+        </dl>
+      </div>
     </main>
 
     <footer>
-      <p>&#9400; <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+      <p>
+        &copy;
+        <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
       </p>
     </footer>
 

@@ -61,3 +61,32 @@ die Seitenskripte ihr Ergebnis neu berechnen. Die Skripte müssen deshalb mit
 Eingabefelder für Dezimalzahlen sind `type="text"` mit `inputmode="decimal"`:
 `type="number"` verwirft Eingaben mit Komma. `parseNumber()` akzeptiert beide
 Schreibweisen.
+
+## Barrierefreiheit
+
+Diese vier Vorgaben gelten für jede Änderung an den Seiten:
+
+1. **Bilder brauchen einen Alternativtext.** Jedes `<img>` bekommt ein
+   `alt`-Attribut – beschreibend bei inhaltstragenden Bildern, leer
+   (`alt=""`) bei rein dekorativen. Derzeit verwendet die App keine Bilder.
+2. **Textgrößen müssen skalierbar sein.** Schriftgrößen, Abstände und
+   Breiten ausschließlich in `rem`, Media Queries in `em`. Kein `px` für
+   irgendetwas, das Text trägt oder umschließt. Ausgenommen sind
+   Haarlinien (`border`), Fokusrahmen (`outline`) und Schatten – sie
+   sollen bei größerer Schrift bewusst nicht mitwachsen.
+3. **Alles muss per Tastatur bedienbar sein.** Bedienelemente sind echte
+   `<button>`-, `<input>`- und `<a>`-Elemente, niemals klickbare `<div>`.
+   Formulare liegen in `<form>` und reagieren auf Enter. Aufklappbereiche
+   schließen mit Escape und geben den Fokus an ihren Auslöser zurück.
+   Jede Seite beginnt mit einem Sprunglink zu `#inhalt`. Fokus nie über
+   `outline: none` entfernen, ohne sichtbaren Ersatz zu setzen.
+4. **HTML semantisch auszeichnen.** `<header>`, `<nav>`, `<main>`,
+   `<footer>` als Seitengerüst; genau eine `<h1>` je Seite und keine
+   übersprungene Ebene; Ergebnisse als `<dl>` aus Bezeichnung und Wert;
+   Optionsgruppen als `<fieldset>` mit `<legend>`; jedes Eingabefeld mit
+   zugehörigem `<label for>`. Die aktive Seite trägt `aria-current="page"`,
+   die Navigation ein `aria-label`, Ergebnisbereiche ein `aria-live="polite"`
+   und Fehlermeldungen `role="alert"`.
+
+Der Farbaufbau erfüllt WCAG 2.1 AA; die geprüften Verhältnisse stehen als
+Kommentar im Kopf von `style.css`.

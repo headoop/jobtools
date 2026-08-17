@@ -4,47 +4,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wochenarbeitszeit konvertieren</title>
+  <title>Teilzeitanteil berechnen – Jobtools</title>
   <link href="style.css" rel="stylesheet" />
   <script src="settings.js" defer></script>
   <script src="convert.js" defer></script>
 </head>
 
 <body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
   <header>
     <p class="brand">Jobtools</p>
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Hauptnavigation">
       <ul>
         <li><a href="index.html">Arbeitszeit</a></li>
-        <li><a class="active" href="#">Wochenarbeitszeit</a></li>
+        <li><a class="active" href="convert.html" aria-current="page">Wochenarbeitszeit</a></li>
         <li><a href="ages.html">Alter berechnen</a></li>
         <li><a href="durations.html">Zeitraum berechnen</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="inhalt">
     <h1>Teilzeitanteil berechnen</h1>
     <div id="maxi-container">
 
       <div id="input-container">
-        <h3>Wochenstunden oder Prozent eintragen und umrechnen:</h3>
-        <div class="form-grid">
+        <p class="intro" id="form-hinweis">Wochenstunden oder Prozent eintragen und umrechnen:</p>
+        <div class="form-grid" role="group" aria-describedby="form-hinweis">
           <label for="hours-input">Wochenstunden (dezimal):</label>
           <input type="text" inputmode="decimal" name="hours-input" id="hours-input" value="" placeholder="31,2" />
-          <button type="button" onclick="convertHoursToPercent()">
-            umrechnen
+          <button type="button" id="hours-button">
+            <span aria-hidden="true">umrechnen</span>
+            <span class="visually-hidden">Wochenstunden in Prozent umrechnen</span>
           </button>
 
           <label for="percent-input">Prozent:</label>
           <input type="text" inputmode="decimal" name="percent-input" id="percent-input" value="" placeholder="80" />
-          <button type="button" onclick="convertPercentToHours()">
-            umrechnen
+          <button type="button" id="percent-button">
+            <span aria-hidden="true">umrechnen</span>
+            <span class="visually-hidden">Prozent in Wochenstunden umrechnen</span>
           </button>
         </div>
       </div>
 
-      <div class="result-box" id="result-box">
+      <div class="result-box" id="result-box" aria-live="polite">
         <dl class="result-grid">
           <dt>Anteil</dt>
           <dd><span class="value" id="value-percent"></span><span class="unit">%</span></dd>
@@ -65,7 +69,7 @@
 
   <footer>
     <p>
-      &#9400;
+      &copy;
       <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
     </p>
   </footer>

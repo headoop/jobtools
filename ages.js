@@ -42,12 +42,18 @@ const calcAges = (dateObject) => {
   return [age, date18string, date21string];
 };
 
+// Absenden per Enter aus dem Datumsfeld heraus, nicht nur per Mausklick
+document.getElementById("age-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  action();
+});
+
 const action = () => {
   if (birthdayEl.value !== "") {
     let birthday = new Date(birthdayEl.value);
     // console.log(birthday);
     let [age, date18string, date21string] = calcAges(birthday);
-    resultContainerEl.style.display = "flex";
+    resultContainerEl.style.display = "grid";
     ageTodayEl.textContent = age;
     dayBefore18El.textContent = date18string;
     dayBefore21El.textContent = date21string;

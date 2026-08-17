@@ -5,6 +5,11 @@
    Koralle und Türkis tragen in Text- und Bedienrollen abgedunkelte
    Varianten, damit die Kontraste WCAG 2.1 AA erfüllen. Der Türkiston
    bleibt als Fläche mit dunkler Schrift unverändert (6,63:1).
+
+   Einheiten: Schrift, Abstände und Breiten durchgehend in rem, damit
+   alles der Schriftgröße des Browsers folgt; Media Query in em aus
+   demselben Grund. In px verbleiben nur Haarlinien, Fokusrahmen und
+   Schatten – die sollen bei größerer Schrift nicht mitwachsen.
    --------------------------------------------------------------- */
 
 :root {
@@ -26,8 +31,8 @@
   --border-input: #7393a9;  /* Bedienelemente: 3,24:1 auf Weiß, 3,01:1 auf --bg */
   --focus: #35a598;         /* Fokusfarbe, 3,01:1 gegen Weiß */
 
-  --radius: 14px;
-  --radius-sm: 8px;
+  --radius: 0.875rem;
+  --radius-sm: 0.5rem;
   --shadow: 0 1px 2px rgba(31, 42, 51, 0.06), 0 10px 30px rgba(31, 42, 51, 0.08);
   --ring: 0 0 0 3px rgba(53, 165, 152, 0.45);
 }
@@ -52,6 +57,43 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   Hilfen für Tastatur und Screenreader
+   --------------------------------------------------------------- */
+
+/* nur für Screenreader: sichtbar für assistive Technik, nicht am Bildschirm */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* überspringt die Navigation; wird erst beim Fokussieren sichtbar */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -100%;
+  z-index: 1001;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  color: var(--blue-dark);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.skip-link:focus {
+  top: 0.5rem;
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------
    Kopfbereich und Navigation
    --------------------------------------------------------------- */
 
@@ -62,8 +104,8 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  padding: 16px 25px 0;
+  gap: 0.75rem;
+  padding: 1rem 1.5625rem 0;
   background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
   box-shadow: 0 2px 12px rgba(31, 42, 51, 0.15);
 }
@@ -88,16 +130,16 @@ header {
 .navbar ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 0.375rem;
   margin: 0;
-  padding: 12px 0 16px;
+  padding: 0.75rem 0 1rem;
   list-style: none;
 }
 
 .navbar a {
   display: block;
-  padding: 8px 16px;
-  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  border-radius: 99rem;  /* Pillenform */
   /* volle Deckkraft: mit 85 % lag der Kontrast bei 3,95:1 */
   color: #fff;
   font-size: 0.95rem;
@@ -135,9 +177,9 @@ header {
 .settings-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 15px;
-  border-radius: 999px;
+  gap: 0.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 99rem;  /* Pillenform */
   background-color: var(--teal);
   color: #10312d;
   font-size: 0.85rem;
@@ -170,14 +212,14 @@ header {
 
 .settings-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 0.625rem);
   right: 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: min(330px, calc(100vw - 28px));
-  padding: 18px 20px 20px;
+  gap: 0.375rem;
+  width: min(20.625rem, calc(100vw - 1.75rem));
+  padding: 1.125rem 1.25rem 1.25rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background-color: var(--surface);
@@ -192,13 +234,13 @@ header {
 }
 
 .settings-panel h2 {
-  margin: 0 0 8px;
+  margin: 0 0 0.5rem;
   font-size: 1.05rem;
   font-weight: 600;
 }
 
 .settings-panel label {
-  margin-top: 6px;
+  margin-top: 0.375rem;
 }
 
 .settings-panel input {
@@ -206,20 +248,20 @@ header {
 }
 
 .settings-hint {
-  margin: 10px 0 0;
+  margin: 0.625rem 0 0;
   color: var(--muted);
   font-size: 0.8rem;
 }
 
 .settings-error {
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
   color: var(--coral-dark);
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .settings-note {
-  margin: 10px 0 0;
+  margin: 0.625rem 0 0;
   color: var(--muted);
   font-size: 0.8rem;
 }
@@ -228,12 +270,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 0.625rem;
+  margin-top: 0.875rem;
 }
 
 .settings-actions button {
-  padding: 8px 18px;
+  padding: 0.5rem 1.125rem;
   font-size: 0.95rem;
 }
 
@@ -260,26 +302,28 @@ header {
 main {
   flex: 1;
   width: 100%;
-  padding: 40px 25px 60px;
+  padding: 2.5rem 1.5625rem 3.75rem;
 }
 
 main h1 {
-  margin: 0 auto 28px;
-  max-width: 650px;
+  margin: 0 auto 1.75rem;
+  max-width: 40.625rem;
   font-size: 1.75rem;
   font-weight: 600;
   text-align: center;
 }
 
-main h3 {
-  margin: 0 0 20px;
+/* Einleitungssatz über einem Formular – bewusst kein <h3>, da es sich um
+   eine Anweisung handelt und die Überschriftenebene sonst übersprungen würde */
+.intro {
+  margin: 0 0 1.25rem;
   color: var(--muted);
   font-size: 1rem;
   font-weight: 500;
 }
 
 footer {
-  padding: 20px 25px 28px;
+  padding: 1.25rem 1.5625rem 1.75rem;
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 0.875rem;
@@ -304,10 +348,10 @@ footer a:hover {
    --------------------------------------------------------------- */
 
 #maxi-container {
-  min-width: 280px;
-  max-width: 650px;
+  min-width: 17.5rem;
+  max-width: 40.625rem;
   margin: 0 auto;
-  padding: 32px 28px;
+  padding: 2rem 1.75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background-color: var(--surface);
@@ -319,8 +363,8 @@ footer a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin: 0 0 24px;
+  gap: 0.875rem;
+  margin: 0 0 1.5rem;
   text-align: center;
 }
 
@@ -329,7 +373,7 @@ footer a:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 /* Beschriftung, Eingabe und Button zeilenübergreifend bündig */
@@ -338,7 +382,7 @@ footer a:hover {
   grid-template-columns: max-content max-content max-content;
   justify-content: center;
   align-items: center;
-  gap: 14px;
+  gap: 0.875rem;
 }
 
 .form-grid label {
@@ -363,7 +407,7 @@ input[type="time"],
 input[type="date"],
 input[type="number"],
 input[type="text"] {
-  padding: 9px 12px;
+  padding: 0.5625rem 0.75rem;
   border: 1px solid var(--border-input);
   border-radius: var(--radius-sm);
   background-color: var(--surface);
@@ -386,15 +430,30 @@ input:focus-visible {
   box-shadow: var(--ring);
 }
 
-/* Optionsfelder als Segmente */
+/* Optionsfelder als Segmente – als <fieldset> mit <legend> ausgezeichnet,
+   damit Screenreader die Gruppe und ihre Beschriftung ansagen */
 
 .option-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
+.option-group legend {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* nicht mit display: none ausblenden – das nähme den Feldern den Fokus */
 .option-group input[type="radio"] {
   position: absolute;
   opacity: 0;
@@ -402,9 +461,9 @@ input:focus-visible {
 }
 
 .option-group label {
-  padding: 8px 18px;
+  padding: 0.5rem 1.125rem;
   border: 1px solid var(--border-input);
-  border-radius: 999px;
+  border-radius: 99rem;  /* Pillenform */
   background-color: var(--surface);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -432,7 +491,7 @@ input:focus-visible {
    --------------------------------------------------------------- */
 
 button {
-  padding: 11px 28px;
+  padding: 0.6875rem 1.75rem;
   border: none;
   border-radius: var(--radius-sm);
   background-color: var(--coral);
@@ -465,7 +524,7 @@ button:active {
 #button-container {
   display: flex;
   justify-content: center;
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
 }
 
 /* ---------------------------------------------------------------
@@ -473,12 +532,16 @@ button:active {
    --------------------------------------------------------------- */
 
 /* Sichtbarkeit steuern index.js bzw. ages.js über display */
+/* Ergebnisliste: <dl> mit Bezeichnung und Wert, eingeblendet von index.js
+   bzw. ages.js. Die Zeilen lösen sich per display: contents ins Raster der
+   Liste auf, damit die Spalten zeilenübergreifend bündig stehen. */
 #result-container {
   display: none;
-  flex-direction: column;
-  gap: 8px;
-  margin: 26px 0 0;
-  padding: 20px;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+  gap: 0.75rem 1.125rem;
+  margin: 1.625rem 0 0;
+  padding: 1.25rem;
   border: 1px solid var(--border);
   border-left: 4px solid var(--blue);
   border-radius: var(--radius-sm);
@@ -486,32 +549,30 @@ button:active {
   text-align: left;
 }
 
-#result-container p {
-  margin: 0;
-  font-size: 1.05rem;
+#result-container .result-row {
+  display: contents;
 }
 
-#result-container span {
+#result-container dt {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+#result-container dd {
+  margin: 0;
   color: var(--blue-dark);
+  font-size: 1.05rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-}
-
-/* Ergebniszeilen der Arbeitszeitberechnung – Sichtbarkeit steuert index.js */
-#workTime,
-#endDay,
-#diffTime,
-#pause {
-  display: none;
 }
 
 /* verborgen, bis convert.js nach der ersten Berechnung .is-visible setzt */
 .result-box {
   display: none;
   flex-direction: column;
-  gap: 8px;
-  margin: 26px 0 0;
-  padding: 20px;
+  gap: 0.5rem;
+  margin: 1.625rem 0 0;
+  padding: 1.25rem;
   border: 1px solid var(--border);
   border-left: 4px solid var(--blue);
   border-radius: var(--radius-sm);
@@ -527,7 +588,7 @@ button:active {
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: baseline;
-  gap: 12px 18px;
+  gap: 0.75rem 1.125rem;
   margin: 0;
 }
 
@@ -540,7 +601,7 @@ button:active {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 10px;
+  gap: 0.625rem;
   margin: 0;
   color: var(--blue-dark);
   font-size: 1.15rem;
@@ -557,8 +618,8 @@ button:active {
 
 /* Einheitenkennzeichnung – macht dezimal und hh:mm unterscheidbar */
 .unit {
-  padding: 2px 10px;
-  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  border-radius: 99rem;  /* Pillenform */
   background-color: var(--teal);
   color: #10312d;
   font-size: 0.75rem;
@@ -567,7 +628,7 @@ button:active {
 }
 
 .note {
-  margin: 16px 0 0;
+  margin: 1rem 0 0;
   color: var(--muted);
   font-size: 0.85rem;
   font-weight: 400;
@@ -581,8 +642,8 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 24px;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
 }
 
 .field-group:last-of-type {
@@ -590,7 +651,7 @@ button:active {
 }
 
 .hint {
-  margin: -8px auto 24px;
+  margin: -0.5rem auto 1.5rem;
   max-width: 46ch;
   color: var(--muted);
   font-size: 0.95rem;
@@ -600,28 +661,28 @@ button:active {
    Kleine Bildschirme
    --------------------------------------------------------------- */
 
-@media (max-width: 480px) {
+@media (max-width: 30em) {
   main {
-    padding: 24px 14px 40px;
+    padding: 1.5rem 0.875rem 2.5rem;
   }
 
   #maxi-container {
-    padding: 24px 18px;
+    padding: 1.5rem 1.125rem;
   }
 
   header {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
   }
 
   .settings-toggle {
     font-size: 0.78rem;
-    padding: 6px 12px;
+    padding: 0.375rem 0.75rem;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .form-grid label {
@@ -633,16 +694,16 @@ button:active {
   }
 
   .form-grid button {
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
     width: 100%;
   }
 
   .result-grid {
     grid-template-columns: 1fr;
-    gap: 4px 0;
+    gap: 0.25rem 0;
   }
 
   .result-grid dd {
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
 }
