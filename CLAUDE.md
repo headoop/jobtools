@@ -5,10 +5,18 @@ with code in this repository.
 
 ## Project
 
-**jobtools** ist eine deutschsprachige Webanwendung zur Arbeitszeitberechnung.
-Sie berechnet anhand von Beginn und Ende einer Schicht: reguläres Schichtende,
-tatsächliche Arbeitszeit (nach Pausenabzug) und die Differenz zur
-Sollarbeitszeit.
+**jobtools** ist eine deutschsprachige Webanwendung mit vier Werkzeugen rund
+um Arbeitszeit und Zeiträume. Jede Seite steht für sich:
+
+| Seite            | Berechnet                                                  |
+| ---------------- | ---------------------------------------------------------- |
+| `index.html`     | **Arbeitszeit** aus Beginn und Ende einer Schicht: reguläres Schichtende, tatsächliche Arbeitszeit nach Pausenabzug und Differenz zur Sollarbeitszeit |
+| `convert.html`   | **Teilzeitanteil**: Wochenstunden und Prozent ineinander, Ausgabe dezimal und als hh:mm |
+| `ages.html`      | **Alter** am heutigen Tag, am Tag vor dem 18. und 21. Geburtstag sowie wahlweise zu einem Zieldatum |
+| `durations.html` | **Zeitraum**: letzter Tag ab einem Startdatum in Tagen oder Wochen, wobei das Startdatum als erster Tag zählt |
+
+Arbeitszeit- und Teilzeitseite rechnen auf einer gemeinsamen, einstellbaren
+Berechnungsbasis (siehe „Berechnungsbasis“ weiter unten).
 
 ## Entwicklung
 
@@ -22,13 +30,23 @@ Entwickeln genügt es, `index.html` direkt im Browser zu öffnen.
 xdg-open index.html
 ```
 
-Es gibt weder Tests noch eine Linting-Konfiguration.
+Es gibt keine Unit-Tests und keine Linting-Konfiguration; geprüft wird mit
+`tools/a11y-check.sh` (siehe „Barrierefreiheit → Prüfung“).
 
 ## Architektur
 
-Die gesamte Logik liegt in `index.js`. Zentraler Einstiegspunkt ist
-`logInput()`, das bei Eingabe in die Zeitfelder ausgelöst wird und die UI
-aktualisiert.
+Jede Seite hat ihr eigenes Skript gleichen Namens; darunter liegt
+`settings.js` mit der Berechnungsbasis und den gemeinsamen Formathelfern
+`format()`, `toHoursMinutes()` und `parseNumber()`. Einstiegspunkt ist auf
+jeder Seite das Absenden des Formulars: `logInput()` (Arbeitszeit),
+`action()` (Alter), `calcDuration()` (Zeitraum) bzw.
+`convertHoursToPercent()` / `convertPercentToHours()` (Teilzeitanteil).
+
+Datumsfelder werden mit `parseDateInput()` als lokale Mitternacht gelesen –
+`new Date("2026-08-17")` wäre UTC und rutschte je nach Zeitzone auf den
+Vortag. Diese Funktion steht zusammen mit `formatDate()` gleichlautend in
+`ages.js` und `durations.js`; die beiden Seiten laden sich nie gemeinsam,
+ein Zusammenlegen in `settings.js` wäre aber die sauberere Lösung.
 
 ### Pausenregeln (deutsches Arbeitsrecht)
 
