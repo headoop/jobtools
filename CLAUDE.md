@@ -8,12 +8,12 @@ with code in this repository.
 **jobtools** ist eine deutschsprachige Webanwendung mit vier Werkzeugen rund
 um Arbeitszeit und Zeiträume. Jede Seite steht für sich:
 
-| Seite            | Berechnet                                                  |
-| ---------------- | ---------------------------------------------------------- |
+| Seite            | Berechnet                                                                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `index.html`     | **Arbeitszeit** aus Beginn und Ende einer Schicht: reguläres Schichtende, tatsächliche Arbeitszeit nach Pausenabzug und Differenz zur Sollarbeitszeit |
-| `convert.html`   | **Teilzeitanteil**: Wochenstunden und Prozent ineinander, Ausgabe dezimal und als hh:mm |
-| `ages.html`      | **Alter** am heutigen Tag, am Tag vor dem 18. und 21. Geburtstag sowie wahlweise zu einem Zieldatum |
-| `durations.html` | **Zeitraum**: letzter Tag ab einem Startdatum in Tagen oder Wochen, wobei das Startdatum als erster Tag zählt |
+| `convert.html`   | **Teilzeitanteil**: Wochenstunden und Prozent ineinander, Ausgabe dezimal und als hh:mm                                                               |
+| `ages.html`      | **Alter** am heutigen Tag, am Tag vor dem 18. und 21. Geburtstag sowie wahlweise zu einem Zieldatum                                                   |
+| `durations.html` | **Zeitraum**: letzter Tag ab einem Startdatum in Tagen oder Wochen, wobei das Startdatum als erster Tag zählt                                         |
 
 Arbeitszeit- und Teilzeitseite rechnen auf einer gemeinsamen, einstellbaren
 Berechnungsbasis (siehe „Berechnungsbasis“ weiter unten).
@@ -65,10 +65,10 @@ liefert `standardWorkDay()` aus der eingestellten Stundenzahl pro Arbeitstag.
 Zwei getrennte, im `localStorage` abgelegte Werte bilden die Basis aller
 Berechnungen – Standard ist 39 Wochenstunden und 7,8 Stunden pro Arbeitstag:
 
-| Schlüssel              | Standard | Verwendung                       |
-| ---------------------- | -------- | -------------------------------- |
-| `jobtools.weekHours`   | 39       | `convert.html` (Teilzeitanteil)  |
-| `jobtools.dayHours`    | 7,8      | `index.html` (Sollarbeitszeit)   |
+| Schlüssel            | Standard | Verwendung                      |
+| -------------------- | -------- | ------------------------------- |
+| `jobtools.weekHours` | 39       | `convert.html` (Teilzeitanteil) |
+| `jobtools.dayHours`  | 7,8      | `index.html` (Sollarbeitszeit)  |
 
 Getrennt, damit auch eine Vier-Tage-Woche abbildbar ist (39 h bei 9,75 h/Tag).
 `settings.js` baut Anzeige und Einstellbereich selbst in den `header` jeder
@@ -134,3 +134,7 @@ Zwei Eigenheiten, die beim Ändern des Prüfskripts zu beachten sind:
   Deshalb bettet das Skript `style.css` in die Prüfseite ein – bei
   `file://` verweigert der Browser sonst den Zugriff auf `cssRules` – und
   wertet die Regeln samt ihrer Spezifität aus.
+
+### Regeln
+
+- Nach main darf nur mit ausdrücklicher Erlaubnis des Users committed werden.
