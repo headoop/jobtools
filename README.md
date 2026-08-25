@@ -19,8 +19,9 @@ Berechnungsbasis (siehe unten), und zwar nur lokal in diesem Browser.
 
 ## Berechnungsbasis
 
-Rechts oben steht auf jeder Seite die Basis, mit der gerechnet wird, etwa
-**39 h/Woche · 7,8 h/Tag**. Ein Klick darauf öffnet die Einstellung.
+Rechts in der Kopfleiste steht die Basis, mit der gerechnet wird, etwa
+**39 h/Woche · 7,8 h/Tag**. Ein Klick darauf öffnet die Einstellung. Sie
+erscheint auf den beiden Seiten, die mit ihr rechnen.
 
 Beide Werte sind **getrennt** einstellbar. Das ist gewollt: So lässt sich eine
 Vier-Tage-Woche abbilden, indem man 39 Wochenstunden bei 9,75 Stunden pro
@@ -33,8 +34,15 @@ Arbeitstag einträgt.
 
 **Gut zu wissen**
 
-- Weicht die Basis vom Standard ab, wechselt die Anzeige von Türkis auf
-  Koralle – Sie sehen also sofort, dass nicht mit 39 h gerechnet wird.
+- Weicht die Basis vom Standard ab, färbt sich die Linie unter der Anzeige
+  rot – Sie sehen also sofort, dass nicht mit 39 h gerechnet wird.
+- **Es gibt nur eine Berechnungsbasis, nicht mehrere.** Sie erscheint auf
+  den beiden Seiten, die mit ihr rechnen – Arbeitszeit und
+  Wochenarbeitszeit – und ist dort dieselbe: Was Sie auf der einen
+  speichern, verwendet auch die andere. Haben Sie beide gleichzeitig offen,
+  zieht die zweite sofort nach; Sie müssen sie nicht neu laden.
+- „Alter berechnen“ und „Zeitraum berechnen“ kommen ohne die Basis aus und
+  zeigen sie deshalb auch nicht an.
 - Die Einstellung bleibt über das Schließen des Browsers hinaus erhalten,
   **gilt aber nur für diesen Browser auf diesem Gerät**. An einem anderen
   Rechner, in einem anderen Browser oder nach dem Löschen der Browserdaten
@@ -46,6 +54,31 @@ Arbeitstag einträgt.
 - Kommazahlen dürfen mit Komma oder Punkt eingegeben werden (`8,75` wie
   `8.75`). Werte außerhalb der Grenzen werden abgelehnt, statt still auf den
   Standard zurückzufallen.
+
+**Achtung bei Firefox, wenn die Seiten von der Festplatte geöffnet werden**
+
+Beginnt die Adresse mit `file:///`, führt Firefox – anders als Edge und
+Chrome – für **jede Datei einen eigenen Speicher**. „Arbeitszeit“ und
+„Wochenarbeitszeit“ merken sich die Berechnungsbasis dann getrennt
+voneinander: Was Sie auf der einen Seite speichern, kennt die andere nicht,
+auch nach dem Neuladen nicht. Auf jeder Seite steht dann eine eigene Basis,
+und beide sehen für sich genommen richtig aus.
+
+Das ist kein Fehler der Anwendung, sondern eine Sicherheitsvorkehrung von
+Firefox: Jede lokale Datei gilt dort als eigene Herkunft, damit eine
+heruntergeladene HTML-Datei nicht die gespeicherten Daten anderer Dateien
+auf dem Rechner auslesen kann. Aus demselben Grund lässt sich das aus der
+Anwendung heraus nicht umgehen.
+
+Zwei Wege führen daran vorbei:
+
+- **Edge oder Chrome verwenden.** Dort teilen sich lokale Dateien einen
+  Speicher; die Basis gilt wie vorgesehen für beide Seiten. Für den
+  üblichen Einsatz unter Windows mit Edge stellt sich das Problem nicht.
+- **Über einen lokalen Webserver öffnen.** Im Projektverzeichnis etwa
+  `python3 -m http.server` starten und die Seiten dann über
+  `http://localhost:8000/index.html` aufrufen. Über `http://` gilt die
+  Basis auch in Firefox für alle Seiten gemeinsam.
 
 ---
 

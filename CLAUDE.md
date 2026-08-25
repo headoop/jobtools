@@ -22,7 +22,8 @@ Berechnungsbasis (siehe „Berechnungsbasis“ weiter unten).
 
 Kein Build-System, keine Abhängigkeiten – die App besteht aus vier Seiten
 (`index.html`, `convert.html`, `ages.html`, `durations.html`) mit je einem
-Skript, dazu `settings.js` und `style.css` für alle Seiten gemeinsam. Zum
+Skript, dazu `style.css` für alle Seiten gemeinsam und `settings.js` für die
+beiden, die mit der Berechnungsbasis rechnen. Zum
 Entwickeln genügt es, `index.html` direkt im Browser zu öffnen.
 
 ```sh
@@ -35,9 +36,10 @@ Es gibt keine Unit-Tests und keine Linting-Konfiguration; geprüft wird mit
 
 ## Architektur
 
-Jede Seite hat ihr eigenes Skript gleichen Namens; darunter liegt
-`settings.js` mit der Berechnungsbasis und den gemeinsamen Formathelfern
-`format()`, `toHoursMinutes()` und `parseNumber()`. Einstiegspunkt ist auf
+Jede Seite hat ihr eigenes Skript gleichen Namens; unter den beiden
+Seiten, die mit der Basis rechnen, liegt zusätzlich `settings.js` mit der
+Berechnungsbasis und den Formathelfern `format()`, `toHoursMinutes()` und
+`parseNumber()`. Einstiegspunkt ist auf
 jeder Seite das Absenden des Formulars: `logInput()` (Arbeitszeit),
 `action()` (Alter), `calcDuration()` (Zeitraum) bzw.
 `convertHoursToPercent()` / `convertPercentToHours()` (Teilzeitanteil).
@@ -46,7 +48,9 @@ Datumsfelder werden mit `parseDateInput()` als lokale Mitternacht gelesen –
 `new Date("2026-08-17")` wäre UTC und rutschte je nach Zeitzone auf den
 Vortag. Diese Funktion steht zusammen mit `formatDate()` gleichlautend in
 `ages.js` und `durations.js`; die beiden Seiten laden sich nie gemeinsam,
-ein Zusammenlegen in `settings.js` wäre aber die sauberere Lösung.
+die Doppelung fällt also nicht auf. Nach `settings.js` gehören sie nicht:
+das Skript binden gerade diese beiden Seiten nicht mehr ein. Für ein
+Zusammenlegen bräuchte es eine eigene gemeinsame Datei.
 
 ### Pausenregeln (deutsches Arbeitsrecht)
 
@@ -71,10 +75,24 @@ Berechnungen – Standard ist 39 Wochenstunden und 7,8 Stunden pro Arbeitstag:
 | `jobtools.dayHours`  | 7,8      | `index.html` (Sollarbeitszeit)  |
 
 Getrennt, damit auch eine Vier-Tage-Woche abbildbar ist (39 h bei 9,75 h/Tag).
-`settings.js` baut Anzeige und Einstellbereich selbst in den `header` jeder
-Seite ein und meldet Änderungen per `document`-Event `jobtools:basis`, worauf
-die Seitenskripte ihr Ergebnis neu berechnen. Die Skripte müssen deshalb mit
-`defer` (nicht `async`) eingebunden werden, damit `settings.js` zuerst läuft.
+`settings.js` binden nur `index.html` und `convert.html` ein – nur sie
+rechnen mit der Basis. `ages.js` und `durations.js` verwenden nichts daraus,
+und eine Anzeige, die auf diesen Seiten nichts bewirkt, sähe aus wie eine
+vierte, eigene Einstellung. Das Skript baut Anzeige und Einstellbereich
+selbst in den `header` ein und meldet Änderungen per `document`-Event
+`jobtools:basis`, worauf die Seitenskripte ihr Ergebnis neu berechnen.
+
+Der Speicher gehört der Herkunft, nicht der einzelnen Seite – beide Seiten
+teilen sich also dieselben zwei Werte. Gelesen werden sie aber nur beim
+Laden, weshalb `settings.js` zusätzlich auf das `storage`-Event des
+`window` hört: nur so erfährt eine parallel offene Seite von einer Änderung,
+statt weiter mit ihrem veralteten Stand zu rechnen und ihn beim nächsten
+Speichern zurückzuschreiben. Die Meldungen werden kurz gesammelt, weil
+`save()` zwei Schlüssel schreibt und nach der ersten Meldung erst die halbe
+neue Basis im Speicher stünde.
+
+Wo `settings.js` geladen wird, müssen beide Skripte mit `defer` (nicht
+`async`) eingebunden sein, damit es vor dem Seitenskript läuft.
 
 Eingabefelder für Dezimalzahlen sind `type="text"` mit `inputmode="decimal"`:
 `type="number"` verwirft Eingaben mit Komma. `parseNumber()` akzeptiert beide

@@ -35,6 +35,11 @@ const clearSettings = () => {
   }
 };
 
+// Gehört ein geänderter Schlüssel zur Berechnungsbasis? null meldet der
+// Browser, wenn der gesamte Speicher geleert wurde.
+const isBasisKey = (key) =>
+  key === null || Object.values(SETTINGS).some((setting) => setting.key === key);
+
 const getWeekHours = () => readSetting("weekHours");
 const getDayHours = () => readSetting("dayHours");
 const isDefaultBasis = () =>
@@ -197,6 +202,30 @@ const buildSettings = () => {
   });
   document.addEventListener("click", (event) => {
     if (!panelEl.hidden && !wrapper.contains(event.target)) closePanel();
+  });
+
+  // Alle vier Seiten schreiben in denselben Speicher, lesen ihn aber nur
+  // beim Laden. Ist mehr als eine Seite gleichzeitig offen, meldet das
+  // storage-Event den übrigen Dokumenten die Änderung – ohne das zeigten
+  // sie weiter die alte Basis an, rechneten damit und überschrieben sie
+  // beim nächsten Speichern mit ihrem veralteten Stand.
+  //
+  // Die Felder eines offenen Einstellbereichs bleiben unangetastet, damit
+  // eine begonnene Eingabe nicht unter der Hand verschwindet; beim nächsten
+  // Öffnen füllt sie openPanel() ohnehin neu.
+  //
+  // Gesammelt wird, weil save() zwei Schlüssel schreibt und das Gegenüber
+  // damit zwei Meldungen bekommt: nach der ersten stünde erst die halbe
+  // neue Basis im Speicher, und die Seite rechnete kurz mit den neuen
+  // Wochenstunden und den alten Stunden pro Arbeitstag.
+  let abgleich;
+  window.addEventListener("storage", (event) => {
+    if (!isBasisKey(event.key)) return;
+    clearTimeout(abgleich);
+    abgleich = setTimeout(() => {
+      showSummary();
+      document.dispatchEvent(new CustomEvent("jobtools:basis"));
+    }, 50);
   });
 
   showSummary();
