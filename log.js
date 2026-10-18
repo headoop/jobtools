@@ -484,7 +484,7 @@ const renderBlock = (entry) => {
   edit.id = `edit-${entry.id}`;
   edit.dataset.edit = entry.id;
   edit.append(el("span", "visually-hidden", name));
-  const remove = el("button", "small-button", "Löschen");
+  const remove = el("button", "small-button danger-button", "Löschen");
   remove.type = "button";
   remove.id = `delete-${entry.id}`;
   remove.dataset.delete = entry.id;
