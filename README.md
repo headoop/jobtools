@@ -251,6 +251,12 @@ schon in die offizielle Zeiterfassung des Arbeitgebers übertragen wurde.
 - **Bearbeiten** lädt einen Block ins Formular; „Änderung speichern“
   übernimmt ihn, „Bearbeitung abbrechen“ oder `Escape` verwirft die Änderung.
 - **Löschen** fragt vorher nach.
+- **Zeiten dieses Monats löschen** unter der Monatsnavigation entfernt alle
+  Blöcke des angezeigten Monats, **Alle Zeiten löschen** unter „Sicherung“
+  den gesamten Bestand. Beide fragen vorher nach und nennen dabei, wie viele
+  Blöcke und Tage betroffen sind; die Haken dieser Tage entfallen mit.
+  Rückgängig machen lässt sich das nicht. Lösch-Knöpfe sind in Koralle
+  hervorgehoben.
 - Das Kästchen **übertragen** gilt für den ganzen Tag. Abgehakte Tage
   tragen zusätzlich den Vermerk „✓ übertragen“.
 - **Vormonat** und **Folgemonat** blättern durch die Monate.
@@ -297,12 +303,15 @@ schon in die offizielle Zeiterfassung des Arbeitgebers übertragen wurde.
 - Ist auch nur eine Zeile fehlerhaft – ungültiges Datum, Ende vor Beginn,
   Überschneidung mit einem vorhandenen Block, zu lange Notiz –, wird
   **nichts** übernommen. Die Meldung nennt die betroffenen Zeilen.
+- Vor **Zeiten dieses Monats löschen** oder **Alle Zeiten löschen** besser
+  exportieren: Die Seite weist in der Rückfrage darauf hin, sichert aber
+  nicht von selbst.
 - Im **privaten Fenster** oder bei gesperrtem Speicher weist die Seite darauf
   hin, dass die Einträge beim Schließen verloren gehen. Exportieren
   funktioniert trotzdem.
 - Lässt sich der gespeicherte Stand nicht lesen, etwa weil er von Hand
   verändert wurde, ändert die Seite nichts mehr daran und meldet das, statt
-  ihn zu überschreiben.
+  ihn zu überschreiben. Auch „Alle Zeiten löschen“ ist dann gesperrt.
 
 ---
 

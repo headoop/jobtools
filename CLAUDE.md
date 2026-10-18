@@ -71,6 +71,11 @@ Alle Einträge liegen als JSON unter dem localStorage-Schlüssel
   `blockProblem()` prüft das für Formular und Import gleichermaßen.
 - Der Erledigt-Haken gilt je Tag (`transferred`); wird ein Tag leer, entfällt
   sein Eintrag dort.
+- Mehrere Blöcke auf einmal (angezeigter Monat, alle Zeiten) löscht
+  `deleteEntries()`: Rückfrage mit Umfang und Export-Hinweis, Haken über
+  `dropEmptyTransferred()`. Wie jede Änderung bei `"broken"` gesperrt – ein
+  unlesbarer Stand wird bewusst auch hierüber nicht entfernt. Lösch-Knöpfe
+  tragen zusätzlich `.danger-button` (nur Farben, kein `display`).
 - Die Notiz hat höchstens 50 **Zeichen** (`[...text].length`, nicht
   `length`). Deshalb kein `maxlength` am Feld – das zählt UTF-16-Einheiten,
   ein Emoji also doppelt; `limitNote()` kappt stattdessen.
