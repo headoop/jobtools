@@ -86,6 +86,14 @@
           <h3 id="month-title" tabindex="-1"></h3>
           <button type="button" class="secondary-button" id="month-next">Folgemonat</button>
         </div>
+        <!-- eigene Zeile, damit man ihn beim Blättern nicht trifft; nur bei
+             gefülltem Monat sichtbar (log.js) -->
+        <div class="backup-actions">
+          <button type="button" class="secondary-button danger-button" id="delete-month-button" hidden>
+            Zeiten dieses Monats löschen
+          </button>
+        </div>
+        <p class="log-status" id="list-status" role="status"></p>
         <div id="log-list" aria-live="polite"></div>
       </section>
 
@@ -94,7 +102,8 @@
         <p class="intro">
           Der Export enthält alle erfassten Zeiten. Beim Import werden die
           Blöcke einer Sicherung zum Bestand hinzugefügt; vorhandene bleiben
-          unverändert.
+          unverändert. „Alle Zeiten löschen“ entfernt sämtliche Einträge aller
+          Monate – vorher exportieren.
         </p>
         <div class="backup-actions">
           <button type="button" class="secondary-button" id="export-button">
@@ -106,6 +115,11 @@
           <input type="file" id="import-file" accept=".csv,text/csv" />
           <button type="button" class="secondary-button" id="import-button">
             CSV importieren
+          </button>
+        </div>
+        <div class="backup-actions">
+          <button type="button" class="secondary-button danger-button" id="delete-all-button">
+            Alle Zeiten löschen
           </button>
         </div>
         <p class="log-status" id="backup-status" role="status"></p>
