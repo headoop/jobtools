@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zeiterfassung – Jobtools</title>
+  <link href="style.css" rel="stylesheet" />
+  <script src="log.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <header>
+    <p class="brand">Jobtools</p>
+    <nav class="navbar" aria-label="Hauptnavigation">
+      <ul>
+        <li><a href="index.html">Arbeitszeit</a></li>
+        <li><a href="convert.html">Wochenarbeitszeit</a></li>
+        <li><a href="ages.html">Alter berechnen</a></li>
+        <li><a href="durations.html">Zeitraum berechnen</a></li>
+        <li><a class="active" href="log.html" aria-current="page">Zeiterfassung</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inhalt">
+    <h1>Zeiterfassung</h1>
+    <div id="maxi-container">
+      <p class="hint">
+        Arbeitszeiten nachträglich eintragen, je Tag beliebig viele Blöcke.
+        Die Zeiten liegen nur in diesem Browser – bitte regelmäßig als
+        CSV-Datei sichern.
+      </p>
+
+      <!-- erscheint nur, wenn der Browser nichts speichern kann (log.js) -->
+      <p class="log-notice" id="log-storage-note" hidden>
+        Der Browser speichert nichts – Einträge gehen beim Schließen verloren.
+        Bitte als CSV exportieren.
+      </p>
+      <p class="form-error" id="log-storage-error" role="alert" hidden></p>
+
+      <section class="log-section" aria-labelledby="entry-heading">
+        <h2 id="entry-heading">Zeit eintragen</h2>
+        <form id="log-form">
+          <div id="input-container">
+            <div class="input-line">
+              <label for="log-date">Datum:</label>
+              <input type="date" name="log-date" id="log-date" />
+            </div>
+            <div class="input-line">
+              <label for="log-begin">Beginn:</label>
+              <input type="time" name="log-begin" id="log-begin" />
+            </div>
+            <div class="input-line">
+              <label for="log-end">Ende:</label>
+              <input type="time" name="log-end" id="log-end" />
+            </div>
+            <!-- kein maxlength: es zählt UTF-16-Einheiten, ein Emoji also
+                 doppelt. Die Grenze von 50 Zeichen setzt log.js durch. -->
+            <div class="input-line">
+              <label for="log-note">Notiz (freiwillig):</label>
+              <input type="text" name="log-note" id="log-note"
+                     autocomplete="off" aria-describedby="log-note-count" />
+            </div>
+            <p class="char-count" id="log-note-count">0 von 50 Zeichen</p>
+          </div>
+          <div id="button-container" class="log-actions">
+            <button type="submit" id="log-submit">Eintragen</button>
+            <button type="button" class="secondary-button" id="log-cancel" hidden>
+              Bearbeitung abbrechen
+            </button>
+          </div>
+        </form>
+
+        <p class="form-error" id="log-error" role="alert" hidden></p>
+      </section>
+
+      <section class="log-section" aria-labelledby="list-heading">
+        <h2 id="list-heading">Erfasste Zeiten</h2>
+        <div class="month-nav">
+          <button type="button" class="secondary-button" id="month-prev">Vormonat</button>
+          <!-- tabindex="-1": nimmt den Fokus auf, wenn der letzte Block
+               gelöscht wurde, ohne in der Tab-Reihenfolge zu stehen -->
+          <h3 id="month-title" tabindex="-1"></h3>
+          <button type="button" class="secondary-button" id="month-next">Folgemonat</button>
+        </div>
+        <div id="log-list" aria-live="polite"></div>
+      </section>
+
+      <section class="log-section" aria-labelledby="backup-heading">
+        <h2 id="backup-heading">Sicherung</h2>
+        <p class="intro">
+          Der Export enthält alle erfassten Zeiten. Beim Import werden die
+          Blöcke einer Sicherung zum Bestand hinzugefügt; vorhandene bleiben
+          unverändert.
+        </p>
+        <div class="backup-actions">
+          <button type="button" class="secondary-button" id="export-button">
+            Als CSV exportieren
+          </button>
+        </div>
+        <div class="backup-actions">
+          <label for="import-file">CSV-Datei:</label>
+          <input type="file" id="import-file" accept=".csv,text/csv" />
+          <button type="button" class="secondary-button" id="import-button">
+            CSV importieren
+          </button>
+        </div>
+        <p class="log-status" id="backup-status" role="status"></p>
+        <div class="form-error" id="backup-error" role="alert" hidden></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      &copy;
+      <a href="mailto:cschult@devmem.de">Christian Schult &lt;cschult@devmem.de&gt;</a>
+    </p>
+  </footer>
+</body>
+
+</html>
