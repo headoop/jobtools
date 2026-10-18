@@ -1,12 +1,14 @@
 # jobtools
 
-Vier kleine Rechner rund um Arbeitszeit und Zeiträume, als reine Webseite
-ohne Installation, Konto oder Server.
+Vier kleine Rechner rund um Arbeitszeit und Zeiträume und eine
+Zeiterfassung fürs Homeoffice, als reine Webseite ohne Installation, Konto
+oder Server.
 
 **Öffnen:** `index.html` im Browser öffnen – per Doppelklick oder über
 `xdg-open index.html`. Es wird nichts hochgeladen und nichts übertragen; alle
-Berechnungen laufen im Browser. Gespeichert wird ausschließlich die
-Berechnungsbasis (siehe unten), und zwar nur lokal in diesem Browser.
+Berechnungen laufen im Browser. Gespeichert werden die Berechnungsbasis
+(siehe unten) und die Einträge der Zeiterfassung, beides nur lokal in diesem
+Browser.
 
 | Seite | Zweck |
 | --- | --- |
@@ -14,6 +16,7 @@ Berechnungsbasis (siehe unten), und zwar nur lokal in diesem Browser.
 | [Wochenarbeitszeit](#teilzeitanteil-berechnen) | Wochenstunden und Prozent ineinander umrechnen |
 | [Alter berechnen](#alter-berechnen) | Alter heute, vor dem 18./21. Geburtstag, zu einem Zieldatum |
 | [Zeitraum berechnen](#zeitraum-berechnen) | Letzter Tag eines Zeitraums ab einem Startdatum |
+| [Zeiterfassung](#zeiterfassung) | Arbeitszeiten nachträglich eintragen, summieren und als CSV sichern |
 
 ---
 
@@ -41,8 +44,8 @@ Arbeitstag einträgt.
   Wochenarbeitszeit – und ist dort dieselbe: Was Sie auf der einen
   speichern, verwendet auch die andere. Haben Sie beide gleichzeitig offen,
   zieht die zweite sofort nach; Sie müssen sie nicht neu laden.
-- „Alter berechnen“ und „Zeitraum berechnen“ kommen ohne die Basis aus und
-  zeigen sie deshalb auch nicht an.
+- „Alter berechnen“, „Zeitraum berechnen“ und „Zeiterfassung“ kommen ohne
+  die Basis aus und zeigen sie deshalb auch nicht an.
 - Die Einstellung bleibt über das Schließen des Browsers hinaus erhalten,
   **gilt aber nur für diesen Browser auf diesem Gerät**. An einem anderen
   Rechner, in einem anderen Browser oder nach dem Löschen der Browserdaten
@@ -79,6 +82,12 @@ Zwei Wege führen daran vorbei:
   `python3 -m http.server` starten und die Seiten dann über
   `http://localhost:8000/index.html` aufrufen. Über `http://` gilt die
   Basis auch in Firefox für alle Seiten gemeinsam.
+
+Die Zeiterfassung betrifft das nur am Rande: Ihre Einträge liest allein
+diese eine Seite, sie bleiben also auch in Firefox unter `file:///`
+erhalten. Gebunden sind sie dann aber an genau diese Datei – wer die Seite
+von einem anderen Ort oder später über `http://` öffnet, sieht einen leeren
+Bestand. Die Einträge lassen sich dann per CSV-Export und -Import umziehen.
 
 ---
 
@@ -219,11 +228,90 @@ letzte Tag des Zeitraums.
 
 ---
 
+## Zeiterfassung
+
+Arbeitszeiten im Homeoffice **nachträglich** eintragen – tages- und
+minutengenau, je Tag beliebig viele Blöcke aus **Datum**, **Beginn** und
+**Ende**, dazu auf Wunsch eine kurze **Notiz**. Die Seite fasst die Blöcke
+nach Tagen, Kalenderwochen und Monat zusammen und merkt sich je Tag, ob er
+schon in die offizielle Zeiterfassung des Arbeitgebers übertragen wurde.
+
+| Angabe | Bedeutung |
+| --- | --- |
+| Summe Monat | Alle Blöcke des angezeigten Monats, als `h:mm` und dezimal |
+| Tage erfasst / davon übertragen | Tage mit mindestens einem Block und wie viele davon abgehakt sind |
+| Summe KW … | Die Blöcke einer Kalenderwoche |
+| Tagessumme | Die Blöcke eines Tages |
+| Pause | Die Lücken zwischen den Blöcken eines Tages, nur zur Information |
+
+**Bedienung**
+
+- Das Datum ist mit heute vorbelegt und bleibt nach dem Eintragen stehen,
+  damit der nächste Block desselben Tages schnell folgt. `Enter` trägt ein.
+- **Bearbeiten** lädt einen Block ins Formular; „Änderung speichern“
+  übernimmt ihn, „Bearbeitung abbrechen“ oder `Escape` verwirft die Änderung.
+- **Löschen** fragt vorher nach.
+- Das Kästchen **übertragen** gilt für den ganzen Tag. Abgehakte Tage
+  tragen zusätzlich den Vermerk „✓ übertragen“.
+- **Vormonat** und **Folgemonat** blättern durch die Monate.
+
+**Gut zu wissen**
+
+- **Keine Blöcke über Mitternacht.** Das Ende muss nach dem Beginn liegen,
+  damit jeder Block eindeutig einem Tag gehört. Eine Nachtschicht wird als
+  zwei Blöcke eingetragen. Weil sich `24:00` nicht eingeben lässt, endet der
+  erste spätestens um `23:59` – die letzte Minute vor Mitternacht fehlt.
+- **Blöcke dürfen sich nicht überschneiden.** Aneinanderstoßen dürfen sie:
+  `08:00–12:00` und `12:00–13:00` sind erlaubt.
+- **Lücken gelten als Pause, abgezogen wird nichts.** Anders als bei
+  „Arbeitszeit berechnen“ gibt es keinen automatischen Pausenabzug und keine
+  Warnung, wenn die gesetzliche Mindestpause unterschritten wird.
+- **Kein Vergleich mit der Sollarbeitszeit.** Die Summen stehen für sich;
+  Über- und Unterstunden rechnet die Seite nicht aus.
+- **Die Notiz ist freiwillig und höchstens 50 Zeichen lang.** Ein Emoji zählt
+  als ein Zeichen. Zeilenumbrüche und Tabulatoren werden zu Leerzeichen.
+- **Kalenderwochen nach ISO 8601:** Die Woche beginnt am Montag. Anfang
+  Januar kann eine Woche noch zum Vorjahr gehören, sie heißt dann etwa
+  „KW 53/2026“.
+- **Wochen am Monatsrand** zeigt jeder Monat nur mit seinen eigenen Tagen.
+  Die Summe trägt dann den Zusatz, etwa „Summe KW 44 (nur Oktober)“.
+- Wird der letzte Block eines Tages gelöscht, entfällt auch dessen Haken.
+
+**Sicherung**
+
+> Die Einträge liegen **nur in diesem Browser auf diesem Gerät**. Wer die
+> Browserdaten löscht, verliert sie. Deshalb regelmäßig exportieren.
+
+- **Als CSV exportieren** speichert alle Einträge, nicht nur den angezeigten
+  Monat, in eine Datei `jobtools-zeiterfassung-JJJJ-MM-TT.csv`. Sie öffnet
+  sich in Excel und LibreOffice mit richtigen Umlauten: UTF-8, Semikolon als
+  Trenner, eine Zeile je Block mit Datum, Beginn, Ende, Dauer als `h:mm` und
+  dezimal, „ja“ oder „nein“ für übertragen und der Notiz.
+- Beginnt eine Notiz mit `=`, `+`, `-` oder `@`, steht in der Datei ein `'`
+  davor, damit die Tabellenkalkulation sie nicht als Formel ausführt. Der
+  Import nimmt es wieder ab.
+- **CSV importieren** liest eine solche Sicherung wieder ein und **ergänzt**
+  den Bestand, statt ihn zu ersetzen. Blöcke, die es mit gleichem Datum,
+  Beginn und Ende schon gibt, werden übersprungen; ihre Notiz bleibt, wie sie
+  ist. Ein zweiter Import derselben Datei ändert also nichts.
+- Ist auch nur eine Zeile fehlerhaft – ungültiges Datum, Ende vor Beginn,
+  Überschneidung mit einem vorhandenen Block, zu lange Notiz –, wird
+  **nichts** übernommen. Die Meldung nennt die betroffenen Zeilen.
+- Im **privaten Fenster** oder bei gesperrtem Speicher weist die Seite darauf
+  hin, dass die Einträge beim Schließen verloren gehen. Exportieren
+  funktioniert trotzdem.
+- Lässt sich der gespeicherte Stand nicht lesen, etwa weil er von Hand
+  verändert wurde, ändert die Seite nichts mehr daran und meldet das, statt
+  ihn zu überschreiben.
+
+---
+
 ## Was jobtools nicht ist
 
-- **Keine Zeiterfassung.** Es gibt keine Historie, keine Wochen- oder
-  Monatssummen und kein Konto. Jede Berechnung steht für sich; nichts wird
-  gespeichert außer der Berechnungsbasis.
+- **Keine offizielle Zeiterfassung.** Die Zeiterfassung ist eine Gedächtnis-
+  stütze fürs Übertragen: Es gibt kein Konto, keine Übertragung an den
+  Arbeitgeber und keine Prüfung von Pausen, Höchstarbeitszeiten oder
+  Sollstunden.
 - **Keine Rechtsauskunft.** Die Pausenstaffel bildet die gesetzlichen
   Mindestpausen ab. Abweichende Regelungen aus Tarif-, Betriebs- oder
   Arbeitsvertrag kennt die Anwendung nicht, ebenso wenig Höchstarbeitszeiten
@@ -244,14 +332,14 @@ letzte Tag des Zeitraums.
   Browserschrift stellen sich Formulare und Ergebnislisten von zwei Spalten
   auf eine um: Die Bezeichnung steht dann über dem Wert. Es entsteht kein
   waagerechtes Scrollen, auch nicht bei stark vergrößerter Schrift.
-- **Fehlende Pflichteingaben werden benannt.** Auf allen vier Seiten
+- **Fehlende Pflichteingaben werden benannt.** Auf allen fünf Seiten
   erscheint bei leerem Feld ein Hinweis statt wortloser Untätigkeit – etwa
   „Bitte einen Beginn eintragen.“ Er verschwindet, sobald die Berechnung
   gelingt, und wird von Screenreadern angesagt.
 
 ## Technische Hinweise
 
-Vier HTML-Seiten, ein Stylesheet und je ein Skript – kein Build, keine
+Fünf HTML-Seiten, ein Stylesheet und je ein Skript – kein Build, keine
 Abhängigkeiten. Läuft in aktuellen Browsern (Chrome, Edge, Firefox, Safari)
 und auch direkt von der Festplatte über `file://`.
 

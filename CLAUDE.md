@@ -5,7 +5,7 @@ with code in this repository.
 
 ## Project
 
-**jobtools** ist eine deutschsprachige Webanwendung mit vier Werkzeugen rund
+**jobtools** ist eine deutschsprachige Webanwendung mit fünf Werkzeugen rund
 um Arbeitszeit und Zeiträume. Jede Seite steht für sich:
 
 | Seite            | Berechnet                                                                                                                                             |
@@ -14,14 +14,15 @@ um Arbeitszeit und Zeiträume. Jede Seite steht für sich:
 | `convert.html`   | **Teilzeitanteil**: Wochenstunden und Prozent ineinander, Ausgabe dezimal und als hh:mm                                                               |
 | `ages.html`      | **Alter** am heutigen Tag, am Tag vor dem 18. und 21. Geburtstag sowie wahlweise zu einem Zieldatum                                                   |
 | `durations.html` | **Zeitraum**: letzter Tag ab einem Startdatum in Tagen oder Wochen, wobei das Startdatum als erster Tag zählt                                         |
+| `log.html`       | **Zeiterfassung**: nachträglich erfasste Zeitblöcke je Tag mit Tages-, ISO-Wochen- und Monatssummen, Erledigt-Haken je Tag, CSV-Export und -Import   |
 
 Arbeitszeit- und Teilzeitseite rechnen auf einer gemeinsamen, einstellbaren
 Berechnungsbasis (siehe „Berechnungsbasis“ weiter unten).
 
 ## Entwicklung
 
-Kein Build-System, keine Abhängigkeiten – die App besteht aus vier Seiten
-(`index.html`, `convert.html`, `ages.html`, `durations.html`) mit je einem
+Kein Build-System, keine Abhängigkeiten – die App besteht aus fünf Seiten
+(`index.html`, `convert.html`, `ages.html`, `durations.html`, `log.html`) mit je einem
 Skript, dazu `style.css` für alle Seiten gemeinsam und `settings.js` für die
 beiden, die mit der Berechnungsbasis rechnen. Zum
 Entwickeln genügt es, `index.html` direkt im Browser zu öffnen.
@@ -41,16 +42,50 @@ Seiten, die mit der Basis rechnen, liegt zusätzlich `settings.js` mit der
 Berechnungsbasis und den Formathelfern `format()`, `toHoursMinutes()` und
 `parseNumber()`. Einstiegspunkt ist auf
 jeder Seite das Absenden des Formulars: `logInput()` (Arbeitszeit),
-`action()` (Alter), `calcDuration()` (Zeitraum) bzw.
-`convertHoursToPercent()` / `convertPercentToHours()` (Teilzeitanteil).
+`action()` (Alter), `calcDuration()` (Zeitraum), `addEntry()`
+(Zeiterfassung) bzw. `convertHoursToPercent()` / `convertPercentToHours()`
+(Teilzeitanteil).
 
 Datumsfelder werden mit `parseDateInput()` als lokale Mitternacht gelesen –
 `new Date("2026-08-17")` wäre UTC und rutschte je nach Zeitzone auf den
 Vortag. Diese Funktion steht zusammen mit `formatDate()` gleichlautend in
-`ages.js` und `durations.js`; die beiden Seiten laden sich nie gemeinsam,
-die Doppelung fällt also nicht auf. Nach `settings.js` gehören sie nicht:
-das Skript binden gerade diese beiden Seiten nicht mehr ein. Für ein
-Zusammenlegen bräuchte es eine eigene gemeinsame Datei.
+`ages.js`, `durations.js` und `log.js`; die Seiten laden sich nie gemeinsam,
+die Dreifachung fällt also nicht auf. Nach `settings.js` gehören sie nicht:
+das Skript binden gerade diese drei Seiten nicht ein. Für ein
+Zusammenlegen bräuchte es eine eigene gemeinsame Datei. Aus demselben Grund
+hat `log.js` eine eigene Kopie von `format()`.
+
+### Zeiterfassung (`log.js`)
+
+Alle Einträge liegen als JSON unter dem localStorage-Schlüssel
+`jobtools.timelog`:
+
+```json
+{ "version": 1,
+  "entries": [ { "id": "…", "date": "2026-10-18", "begin": "08:05", "end": "12:10", "note": "" } ],
+  "transferred": [ "2026-10-16" ] }
+```
+
+- Ein Block gehört genau einem Tag: Ende nach Beginn, kein Block über
+  Mitternacht, keine Überschneidung mit einem anderen Block desselben Tages.
+  `blockProblem()` prüft das für Formular und Import gleichermaßen.
+- Der Erledigt-Haken gilt je Tag (`transferred`); wird ein Tag leer, entfällt
+  sein Eintrag dort.
+- Die Notiz hat höchstens 50 **Zeichen** (`[...text].length`, nicht
+  `length`). Deshalb kein `maxlength` am Feld – das zählt UTF-16-Einheiten,
+  ein Emoji also doppelt; `limitNote()` kappt stattdessen.
+- Ist der gespeicherte Inhalt unlesbar oder hat eine unbekannte `version`,
+  wird er **nicht überschrieben**: `state` steht dann auf `"broken"`, und jede
+  Änderung wird abgelehnt.
+- Ein zweites offenes Fenster erfährt über das `storage`-Event von
+  Änderungen. Anders als in `settings.js` ohne Sammelverzögerung, weil nur
+  ein Schlüssel geschrieben wird.
+- Der CSV-Export ist zugleich die Sicherung und enthält deshalb alle
+  Einträge. Der Import liest nur dieses eigene Format, prüft die ganze Datei
+  vor dem Übernehmen und ergänzt den Bestand.
+
+`log.html` bindet `settings.js` nicht ein: Es gibt bewusst keinen Abgleich
+mit der Sollarbeitszeit.
 
 ### Pausenregeln (deutsches Arbeitsrecht)
 
@@ -76,9 +111,9 @@ Berechnungen – Standard ist 39 Wochenstunden und 7,8 Stunden pro Arbeitstag:
 
 Getrennt, damit auch eine Vier-Tage-Woche abbildbar ist (39 h bei 9,75 h/Tag).
 `settings.js` binden nur `index.html` und `convert.html` ein – nur sie
-rechnen mit der Basis. `ages.js` und `durations.js` verwenden nichts daraus,
+rechnen mit der Basis. `ages.js`, `durations.js` und `log.js` verwenden nichts daraus,
 und eine Anzeige, die auf diesen Seiten nichts bewirkt, sähe aus wie eine
-vierte, eigene Einstellung. Das Skript baut Anzeige und Einstellbereich
+eigene Einstellung der Seite. Das Skript baut Anzeige und Einstellbereich
 selbst in den `header` ein und meldet Änderungen per `document`-Event
 `jobtools:basis`, worauf die Seitenskripte ihr Ergebnis neu berechnen.
 
@@ -134,13 +169,18 @@ Bedienelemente, Fokusrahmen, Tastaturreihenfolge und Semantik. Nötig ist
 nur ein installiertes Chromium oder Chrome.
 
 ```sh
-tools/a11y-check.sh              # alle vier Seiten
+tools/a11y-check.sh              # alle fünf Seiten
 tools/a11y-check.sh convert.html # einzelne Seite
 ```
 
 Der Aufruf endet mit 0, wenn alles besteht, sonst mit 1 – nutzbar also
 auch automatisiert. Die eigentlichen Prüfungen stehen in
 `tools/a11y-check.js` und laufen im Browser.
+
+`log.html` wird mit leerem Speicher geprüft: Die Monatsliste, die `log.js`
+erst aus gespeicherten Einträgen aufbaut, erfasst die Prüfung deshalb nicht.
+Änderungen daran also zusätzlich von Hand mit gefülltem Monat prüfen,
+besonders bei großer Schrift und schmalem Fenster.
 
 Zwei Eigenheiten, die beim Ändern des Prüfskripts zu beachten sind:
 
