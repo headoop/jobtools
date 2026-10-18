@@ -29,7 +29,7 @@ fi
 if [ "$#" -gt 0 ]; then
   seiten="$*"
 else
-  seiten="index.html convert.html ages.html durations.html"
+  seiten="index.html convert.html ages.html durations.html log.html"
 fi
 
 arbeitsverzeichnis=$(mktemp -d)
