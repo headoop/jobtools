@@ -8,7 +8,8 @@
 
    Zeiterfassung: --blue-dark auf Weiß 6,94:1 und auf --blue-tint 6,17:1
    (Nebenaktionen), deren Rahmen in --blue 4,80:1; --ink auf --coral-tint
-   13,01:1 (Speicherhinweis).
+   13,01:1 (Speicherhinweis). Lösch-Knöpfe: --coral-dark auf Weiß 5,61:1,
+   auf --coral-tint 4,99:1, deren Rahmen in --coral 4,50:1 gegen Weiß.
 
    Einheiten: Schrift, Abstände und Breiten durchgehend in rem, damit
    alles der Schriftgröße des Browsers folgt; Media Query in em aus
@@ -771,6 +772,19 @@ button:active {
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
   font-weight: 500;
+}
+
+/* Löschen: Zusatz zu .secondary-button oder .small-button, ändert nur die
+   Farben und muss deshalb hinter beiden stehen. Keine Fläche in Koralle –
+   so sehen die Hauptaktionen aus. Kein display, sonst wirkt hidden nicht. */
+.danger-button {
+  border-color: var(--coral);
+  color: var(--coral-dark);
+}
+
+.danger-button:hover {
+  background-color: var(--coral-tint);
+  color: var(--coral-dark);
 }
 
 .log-actions {

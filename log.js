@@ -21,6 +21,9 @@ const storageNoteEl = document.getElementById("log-storage-note");
 const storageErrorEl = document.getElementById("log-storage-error");
 const monthTitleEl = document.getElementById("month-title");
 const listEl = document.getElementById("log-list");
+const listStatusEl = document.getElementById("list-status");
+const deleteMonthEl = document.getElementById("delete-month-button");
+const deleteAllEl = document.getElementById("delete-all-button");
 const fileEl = document.getElementById("import-file");
 const backupStatusEl = document.getElementById("backup-status");
 const backupErrorEl = document.getElementById("backup-error");
@@ -408,6 +411,43 @@ const deleteEntry = (id) => {
   (target || monthTitleEl).focus();
 };
 
+// Löscht mehrere Blöcke nach einer Rückfrage; where steht in den Texten,
+// etwa „im Oktober 2026“. Liefert true, wenn gelöscht wurde.
+const deleteEntries = (entries, where, showMessage, showResult) => {
+  if (!canChange(showMessage)) return false;
+  const days = new Set(entries.map((entry) => entry.date));
+  const question =
+    `${plural(entries.length, "Block", "Blöcke")} an ${plural(days.size, "Tag", "Tagen")} ` +
+    `${where} endgültig löschen? Das lässt sich nicht rückgängig machen – wer die ` +
+    "Zeiten noch braucht, exportiert sie vorher als CSV.";
+  if (!window.confirm(question)) {
+    showResult("Löschen abgebrochen, nichts wurde geändert.");
+    return false;
+  }
+
+  const ids = new Set(entries.map((entry) => entry.id));
+  log.entries = log.entries.filter((entry) => !ids.has(entry.id));
+  days.forEach(dropEmptyTransferred);
+  persist();
+  if (editingId && ids.has(editingId)) cancelEdit();
+  render();
+  showResult(`${plural(entries.length, "Block", "Blöcke")} ${where} gelöscht.`);
+  return true;
+};
+
+const showListStatus = (message) => {
+  listStatusEl.textContent = message;
+};
+
+const deleteMonth = () => {
+  const entries = monthEntries();
+  // nur möglich, wenn ein anderes Fenster den Monat inzwischen geleert hat
+  if (entries.length === 0) return;
+  const where = `im ${formatMonth(view.year, view.month)}`;
+  // der Knopf verschwindet mit dem letzten Block des Monats
+  if (deleteEntries(entries, where, showError, showListStatus)) monthTitleEl.focus();
+};
+
 const setTransferred = (date, checked) => {
   if (!canChange(showError)) {
     render();
@@ -426,16 +466,24 @@ const setTransferred = (date, checked) => {
 const today = new Date();
 let view = { year: today.getFullYear(), month: today.getMonth() };
 
+// eine Meldung zum Löschen gehört zu dem Monat, in dem gelöscht wurde
 const showMonthOf = (dateValue) => {
   const date = parseDateInput(dateValue);
   view = { year: date.getFullYear(), month: date.getMonth() };
+  showListStatus("");
   render();
 };
 
 const changeMonth = (step) => {
   const date = new Date(view.year, view.month + step, 1);
   view = { year: date.getFullYear(), month: date.getMonth() };
+  showListStatus("");
   render();
+};
+
+const monthEntries = () => {
+  const prefix = `${view.year}-${pad(view.month + 1)}-`;
+  return sortEntries(log.entries.filter((entry) => entry.date.startsWith(prefix)));
 };
 
 const el = (tag, className, text) => {
@@ -484,7 +532,7 @@ const renderBlock = (entry) => {
   edit.id = `edit-${entry.id}`;
   edit.dataset.edit = entry.id;
   edit.append(el("span", "visually-hidden", name));
-  const remove = el("button", "small-button", "Löschen");
+  const remove = el("button", "small-button danger-button", "Löschen");
   remove.type = "button";
   remove.id = `delete-${entry.id}`;
   remove.dataset.delete = entry.id;
@@ -539,8 +587,8 @@ const render = () => {
   monthTitleEl.textContent = monthName;
   listEl.replaceChildren();
 
-  const prefix = `${view.year}-${pad(view.month + 1)}-`;
-  const entries = sortEntries(log.entries.filter((entry) => entry.date.startsWith(prefix)));
+  const entries = monthEntries();
+  deleteMonthEl.hidden = entries.length === 0;
   if (entries.length === 0) {
     listEl.append(el("p", "log-empty", `Für ${monthName} sind keine Zeiten erfasst.`));
     return;
@@ -845,6 +893,20 @@ const importCsv = () => {
   reader.readAsText(file, "utf-8");
 };
 
+const deleteAll = () => {
+  // vor der Prüfung auf leeren Bestand: bei unlesbarem Speicher ist log leer,
+  // die Meldung soll aber die Sperre nennen
+  if (!canChange(showBackupError)) return;
+  if (log.entries.length === 0) {
+    showBackupStatus("Es gibt keine Zeiten zu löschen.");
+    return;
+  }
+  // cancelEdit() setzt den Fokus ins Formular; er gehört zurück auf den Knopf
+  if (deleteEntries([...log.entries], "aller Monate", showBackupError, showBackupStatus)) {
+    deleteAllEl.focus();
+  }
+};
+
 // ---------------------------------------------------------------
 // Ereignisse
 // ---------------------------------------------------------------
@@ -865,6 +927,8 @@ document.getElementById("month-prev").addEventListener("click", () => changeMont
 document.getElementById("month-next").addEventListener("click", () => changeMonth(1));
 document.getElementById("export-button").addEventListener("click", exportCsv);
 document.getElementById("import-button").addEventListener("click", importCsv);
+deleteMonthEl.addEventListener("click", deleteMonth);
+deleteAllEl.addEventListener("click", deleteAll);
 
 // ein Handler für die ganze Liste, die bei jeder Darstellung neu entsteht
 listEl.addEventListener("click", (event) => {
